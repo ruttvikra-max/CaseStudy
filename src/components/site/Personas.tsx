@@ -52,7 +52,7 @@ function TraitBlock({ label, items }: { label: string; items: string[] }) {
       <div className="kicker mb-2.5 text-accent-primary/80">{label}</div>
       <ul className="space-y-1.5">
         {items.map((it) => (
-          <li key={it} className="flex gap-2.5 text-sm leading-snug text-fog/85">
+          <li key={it} className="flex gap-2.5 text-base leading-snug text-fog/85">
             <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-fog/40" />
             {it}
           </li>
@@ -93,10 +93,10 @@ export default function Personas() {
                       <h3 className="font-display text-3xl leading-none text-pearl">
                         {p.name}
                       </h3>
-                      <p className="mt-3 text-sm text-fog/80">{p.role}</p>
-                      <p className="text-sm text-fog/65">{p.company}</p>
+                      <p className="mt-3 text-base text-fog/80">{p.role}</p>
+                      <p className="text-base text-fog/65">{p.company}</p>
                     </div>
-                    <span className="font-mono text-xs text-accent-primary/80">
+                    <span className="font-mono text-sm text-accent-primary/80">
                       AGE {p.age}
                     </span>
                   </div>

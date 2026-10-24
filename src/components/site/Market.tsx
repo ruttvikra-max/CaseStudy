@@ -87,7 +87,7 @@ export default function Market() {
               <div className="font-display text-[clamp(34px,4vw,52px)] font-normal leading-none text-accent-primary">
                 {s.value}
               </div>
-              <p className="mt-4 max-w-[15rem] text-sm leading-relaxed text-fog/75">
+              <p className="mt-4 max-w-[15rem] text-base leading-relaxed text-fog/75">
                 {s.label}
               </p>
             </Reveal>
@@ -107,7 +107,7 @@ export default function Market() {
               >
                 Seven tools in adjacent spaces. None covers the full picture.
               </Reveal>
-              <Reveal delay={130} className="mt-5 max-w-xl text-fog/75 lg:max-w-none">
+              <Reveal delay={130} className="mt-5 max-w-[62ch] text-fog/75">
                 Each rival owns one slice — tokens, linting, or documentation.
                 Hover to pause and read where each one stops short.
               </Reveal>
@@ -140,7 +140,7 @@ export default function Market() {
                         <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/15 font-display text-lg text-accent-primary">
                           {c.name[0]}
                         </span>
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-fog/60">
+                        <span className="font-mono text-xs uppercase tracking-wider text-fog/60">
                           {c.stage}
                         </span>
                       </div>
@@ -148,9 +148,9 @@ export default function Market() {
                         <h3 className="font-display text-2xl leading-none text-pearl">
                           {c.name}
                         </h3>
-                        <p className="mt-2 text-sm text-fog/80">{c.pos}</p>
+                        <p className="mt-2 text-base text-fog/80">{c.pos}</p>
                       </div>
-                      <div className="border-t border-ink/8 pt-3 text-sm text-accent-primary">
+                      <div className="border-t border-ink/8 pt-3 text-base text-accent-primary">
                         Gap — {c.gap}
                       </div>
                     </div>
@@ -189,7 +189,7 @@ export default function Market() {
                       }`}
                     >
                       <td
-                        className={`py-3.5 pr-4 text-sm ${
+                        className={`py-3.5 pr-4 text-base ${
                           row.ours
                             ? "font-medium text-accent-primary"
                             : "text-pearl/85"
@@ -210,7 +210,7 @@ export default function Market() {
                 </tbody>
               </table>
             </Reveal>
-            <Reveal delay={120} className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-fog/60">
+            <Reveal delay={120} className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-fog/60">
               <span><span className="text-pearl/85">●</span> Full</span>
               <span><span className="text-fog/65">◐</span> Partial</span>
               <span><span className="text-ink/30">–</span> None</span>

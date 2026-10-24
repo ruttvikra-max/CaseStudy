@@ -41,10 +41,10 @@ export default function UnderTheHood() {
               <div className="flex items-center gap-5">
                 <span className="font-display text-3xl text-ink/12">{a.n}</span>
                 <div className="max-w-md">
-                  <h3 className="font-sans text-base font-medium text-pearl">
+                  <h3 className="font-sans text-lg font-medium text-pearl">
                     {a.name}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-fog/70">
+                  <p className="mt-1.5 text-base leading-relaxed text-fog/70">
                     {a.body}
                   </p>
                 </div>
@@ -73,7 +73,7 @@ export default function UnderTheHood() {
             >
               A number that&rsquo;s credible — not an alarm.
             </Reveal>
-            <Reveal delay={120} className="mt-5 max-w-xl space-y-4 text-fog/80 lg:max-w-none">
+            <Reveal delay={120} className="mt-5 max-w-[62ch] space-y-4 text-fog/80">
               <p>
                 Raw compliance passes through a deliberate{" "}
                 <span className="text-pearl">lenient curve</span> before
@@ -86,7 +86,7 @@ export default function UnderTheHood() {
                 number reads as honest: not flattery, not panic.
               </p>
             </Reveal>
-            <Reveal delay={160} className="mt-7 rounded-xl border border-ink/8 bg-void-1 p-5 font-mono text-xs leading-relaxed text-fog/70">
+            <Reveal delay={160} className="mt-7 rounded-xl border border-ink/8 bg-void-1 p-5 font-mono text-sm leading-relaxed text-fog/70">
               (Component × .35) + (Token × .30) +<br />
               (Naming × .20) + (Spacing × .15)<br />
               <span className="text-accent-primary">→ lenient curve → 0–100 + grade</span>
@@ -107,8 +107,8 @@ export default function UnderTheHood() {
                   {g.grade}
                 </span>
                 <div className="flex-1">
-                  <div className="text-sm font-medium text-pearl">{g.label}</div>
-                  <div className="font-mono text-xs text-fog/65">{g.range}</div>
+                  <div className="text-base font-medium text-pearl">{g.label}</div>
+                  <div className="font-mono text-sm text-fog/65">{g.range}</div>
                 </div>
                 <div
                   className="h-1.5 w-16 rounded-full"

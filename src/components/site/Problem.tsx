@@ -54,8 +54,8 @@ export default function Problem() {
               <div className="font-display text-3xl text-ink/12 transition-colors duration-300 group-hover:text-accent-primary/40">
                 {b.n}
               </div>
-              <h3 className="mt-5 text-base font-medium text-pearl">{b.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-fog/80">{b.body}</p>
+              <h3 className="mt-5 text-lg font-medium text-pearl">{b.title}</h3>
+              <p className="mt-3 text-base leading-relaxed text-fog/80">{b.body}</p>
             </Reveal>
           ))}
         </div>
@@ -82,7 +82,7 @@ export default function Problem() {
                   {it.stat}
                 </div>
                 <div className="kicker mt-4 text-pearl/80">{it.tag}</div>
-                <p className="mt-2 text-sm leading-relaxed text-fog/70">{it.label}</p>
+                <p className="mt-2 text-base leading-relaxed text-fog/70">{it.label}</p>
               </Reveal>
             ))}
           </div>

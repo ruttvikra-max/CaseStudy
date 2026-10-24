@@ -69,7 +69,7 @@ export default function Outcome() {
               <h3 className="mt-4 font-sans text-lg font-medium text-pearl">
                 {w.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-fog/75">{w.body}</p>
+              <p className="mt-3 text-base leading-relaxed text-fog/75">{w.body}</p>
             </Reveal>
           ))}
         </div>
@@ -98,13 +98,13 @@ export default function Outcome() {
                   >
                     {r.phase}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-fog/65">
+                  <span className="font-mono text-xs uppercase tracking-wider text-fog/65">
                     {r.when}
                   </span>
                 </div>
                 <ul className="mt-5 space-y-2">
                   {r.items.map((it) => (
-                    <li key={it} className="flex gap-2.5 text-sm text-fog/80">
+                    <li key={it} className="flex gap-2.5 text-base text-fog/80">
                       <span
                         className={`mt-2 h-1 w-1 shrink-0 rounded-full ${
                           r.active ? "bg-accent-primary" : "bg-fog/40"
@@ -114,7 +114,7 @@ export default function Outcome() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 border-t border-ink/8 pt-4 text-sm text-pearl/70">
+                <div className="mt-6 border-t border-ink/8 pt-4 text-base text-pearl/70">
                   {r.outcome}
                 </div>
               </Reveal>

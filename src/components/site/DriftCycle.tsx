@@ -122,7 +122,7 @@ export default function DriftCycle() {
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md" style={{ background: `${s.color}1f`, color: s.color }}>
                   <Icon name={s.icon} />
                 </span>
-                <span className="font-mono text-[10px] tabular-nums" style={{ color: s.color }}>
+                <span className="font-mono text-xs tabular-nums" style={{ color: s.color }}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
@@ -133,8 +133,8 @@ export default function DriftCycle() {
           {/* center: the loop + health cue */}
           <div className="absolute left-1/2 top-1/2 w-[26%] -translate-x-1/2 -translate-y-1/2 text-center">
             <div className="font-display text-4xl text-accent-primary">↻</div>
-            <p className="mt-1 text-sm font-medium text-pearl">The loop compounds</p>
-            <p className="mt-1 text-xs leading-snug text-fog/60">
+            <p className="mt-1 text-base font-medium text-pearl">The loop compounds</p>
+            <p className="mt-1 text-sm leading-snug text-fog/60">
               system authority drops each cycle
             </p>
             {/* declining health bar */}
@@ -171,8 +171,8 @@ export default function DriftCycle() {
                   <Icon name={s.icon} />
                 </span>
                 <div>
-                  <span className="font-mono text-[10px]" style={{ color: s.color }}>{String(i + 1).padStart(2, "0")}</span>
-                  <p className="text-sm leading-snug text-pearl/85">{s.label}</p>
+                  <span className="font-mono text-xs" style={{ color: s.color }}>{String(i + 1).padStart(2, "0")}</span>
+                  <p className="text-base leading-snug text-pearl/85">{s.label}</p>
                 </div>
               </li>
             ))}
@@ -181,7 +181,7 @@ export default function DriftCycle() {
         {/* loop-back — ↻ sits under the same icon column */}
         <div className="mt-6 flex items-center gap-4 pl-1 text-fog/65">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center text-base text-accent-primary">↻</span>
-          <span className="text-sm">Back to the top — worse each pass.</span>
+          <span className="text-base">Back to the top — worse each pass.</span>
         </div>
       </div>
     </div>
