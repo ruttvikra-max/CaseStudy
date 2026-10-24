@@ -66,7 +66,7 @@ export default function Market() {
   return (
     <section
       id="market"
-      className="relative border-t border-ink/5 bg-void-1 py-28 sm:py-36"
+      className="relative overflow-x-clip border-t border-ink/5 bg-void-1 py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -76,26 +76,8 @@ export default function Market() {
           lead="India is Figma's second-largest user market — 40% of the BSE-100 are customers. The wedge: mid-sized Indian product teams scaling their design systems, and early-stage design agencies."
         />
 
-        {/* stat band */}
-        <div className="mt-16 grid grid-cols-1 gap-y-10 border-y border-ink/10 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
-          {STATS.map((s, i) => (
-            <Reveal
-              key={s.value}
-              delay={i * 80}
-              className="lg:border-l lg:border-ink/10 lg:pl-6 lg:first:border-l-0 lg:first:pl-0"
-            >
-              <div className="font-display text-[clamp(34px,4vw,52px)] font-normal leading-none text-accent-primary">
-                {s.value}
-              </div>
-              <p className="mt-4 max-w-[15rem] text-base leading-relaxed text-fog/75">
-                {s.label}
-              </p>
-            </Reveal>
-          ))}
-        </div>
-
         {/* competitive landscape */}
-        <div className="mt-24">
+        <div className="mt-16">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             {/* left — narrative */}
             <div>
@@ -165,15 +147,15 @@ export default function Market() {
             <Reveal className="kicker mb-5 text-fog/65">
               Capability coverage — only one row is complete
             </Reveal>
-            <Reveal delay={60} className="overflow-x-auto">
-              <table className="w-full min-w-[640px] border-collapse text-left">
+            <Reveal delay={60}>
+              <table className="w-full table-fixed border-collapse sm:table-auto text-left">
                 <thead>
                   <tr className="border-b border-ink/12">
-                    <th className="kicker py-3 pr-4 font-normal text-fog/65">Tool</th>
+                    <th className="kicker w-[30%] py-3 pr-2 font-normal text-fog/65 sm:w-auto sm:pr-4">Tool</th>
                     {CAPS.map((c) => (
                       <th
                         key={c}
-                        className="kicker px-2 py-3 text-center font-normal text-fog/65"
+                        className="kicker px-0.5 py-3 text-center font-normal text-fog/65 sm:px-2 !text-[11px] max-[360px]:!text-[10px] !tracking-[0.02em] sm:!text-xs sm:!tracking-[0.16em]"
                       >
                         {c}
                       </th>
@@ -189,7 +171,7 @@ export default function Market() {
                       }`}
                     >
                       <td
-                        className={`py-3.5 pr-4 text-base ${
+                        className={`py-3.5 pr-2 text-sm sm:pr-4 sm:text-base ${
                           row.ours
                             ? "font-medium text-accent-primary"
                             : "text-pearl/85"
@@ -200,7 +182,7 @@ export default function Market() {
                       {row.cov.map((v, i) => (
                         <td
                           key={i}
-                          className="px-2 py-3.5 text-center text-base"
+                          className="px-0.5 py-3.5 text-center text-base sm:px-2"
                         >
                           <Mark v={v} ours={row.ours} />
                         </td>
@@ -233,6 +215,24 @@ export default function Market() {
               intersection is open.
             </p>
           </Reveal>
+        </div>
+
+        {/* stat band */}
+        <div className="mt-24 grid grid-cols-1 gap-y-10 border-y border-ink/10 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
+          {STATS.map((s, i) => (
+            <Reveal
+              key={s.value}
+              delay={i * 80}
+              className="lg:border-l lg:border-ink/10 lg:pl-6 lg:first:border-l-0 lg:first:pl-0"
+            >
+              <div className="font-display text-[clamp(34px,4vw,52px)] font-normal leading-none text-accent-primary">
+                {s.value}
+              </div>
+              <p className="mt-4 max-w-[15rem] text-base leading-relaxed text-fog/75">
+                {s.label}
+              </p>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

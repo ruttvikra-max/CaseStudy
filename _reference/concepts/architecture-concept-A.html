@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept A — Two Rooms</title>
+<style>
+  :root {
+    --bg:#f7f6f2; --surface:#fff; --surface-2:#efede7; --text:#0b0d12; --fog:#2a303c;
+    --line:rgba(11,13,18,.12); --accent:#b45309; --accent-soft:rgba(180,83,9,.10); --no:#8a2a2a;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#06070a; --surface:#0b0d12; --surface-2:#11141b; --text:#f5f7ff; --fog:#aeb6c2;
+      --line:rgba(255,255,255,.10); --accent:#ff8a1e; --accent-soft:rgba(255,138,30,.12); --no:#ff8f8f;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#06070a; --surface:#0b0d12; --surface-2:#11141b; --text:#f5f7ff; --fog:#aeb6c2;
+    --line:rgba(255,255,255,.10); --accent:#ff8a1e; --accent-soft:rgba(255,138,30,.12); --no:#ff8f8f;
+    color-scheme: dark;
+  }
+  * { box-sizing:border-box; }
+  button { white-space:nowrap; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:1200px; margin:0 auto; padding:72px 16px 96px; }
+  @media (min-width:768px){ .wrap { padding:96px 40px 120px; } }
+  .bar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:48px; }
+  .kicker { font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--fog); opacity:.8; }
+  .toggle { min-height:44px; padding:0 16px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:14px; cursor:pointer; }
+  h2 { font-size:clamp(28px,4vw,48px); line-height:1.12; letter-spacing:-.01em; font-weight:500; margin:12px 0 0; max-width:22ch; }
+  .lead { max-width:62ch; color:var(--fog); margin:20px 0 0; font-size:18px; }
+  .lead b, p b { color:var(--text); font-weight:600; }
+  .mono { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+
+  /* rooms */
+  .rooms { display:grid; gap:0; margin-top:56px; grid-template-columns:1fr; }
+  @media (min-width:900px){ .rooms { grid-template-columns:1fr 120px 1fr; } }
+  .room { background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:28px; display:flex; flex-direction:column; gap:16px; }
+  .room-head { display:flex; gap:16px; align-items:center; }
+  .room-icon { width:56px; height:56px; flex:none; border-radius:14px; background:var(--accent-soft); display:grid; place-items:center; color:var(--accent); }
+  .room h3 { margin:0; font-size:24px; font-weight:600; line-height:1.2; }
+  .tech { font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--accent); letter-spacing:.04em; }
+  .room ul { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+  .room li { display:grid; grid-template-columns:24px 1fr; gap:10px; align-items:start; }
+  .room li svg { margin-top:4px; }
+  .yes { color:var(--accent); } .no { color:var(--no); }
+  .job { margin:auto 0 0; padding-top:16px; border-top:1px solid var(--line); color:var(--fog); }
+  .job b { color:var(--text); }
+
+  /* wall + slot */
+  .wall { position:relative; display:flex; align-items:center; justify-content:center; padding:20px 0; }
+  .wall::before { content:""; position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-50%);
+    background:repeating-linear-gradient(to bottom,var(--line) 0 8px,transparent 8px 14px); }
+  @media (min-width:900px){ .wall { padding:0; } }
+  .slot { position:relative; z-index:1; background:var(--bg); border:1px solid var(--accent); border-radius:14px; padding:12px 14px; text-align:center; width:min(100%,260px); }
+  @media (min-width:900px){ .slot { width:112px; padding:12px 6px; } }
+  .note { width:40px; height:28px; margin:0 auto 8px; color:var(--accent); }
+  .slot .k { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--fog); }
+  .slot .msg { font:12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--accent); word-break:break-all; margin-top:4px; }
+  .dir { display:block; font-size:20px; color:var(--accent); line-height:1; margin-top:6px; }
+  .dir::after { content:"↓"; } @media (min-width:900px){ .dir::after { content:"→"; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .note { animation: pass 3.2s ease-in-out infinite; }
+    @keyframes pass { 0%,15% { transform:translateY(-6px); opacity:.0 } 35%,65% { transform:none; opacity:1 } 85%,100% { transform:translateY(6px); opacity:0 } }
+    @media (min-width:900px){ @keyframes pass { 0%,15% { transform:translateX(-10px); opacity:0 } 35%,65% { transform:none; opacity:1 } 85%,100% { transform:translateX(10px); opacity:0 } } }
+  }
+
+  .analogy { margin-top:32px; max-width:62ch; padding:20px 24px; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:0 14px 14px 0; }
+  .analogy p { margin:0; }
+
+  /* why */
+  .why { margin-top:72px; }
+  .why-grid { display:grid; gap:16px; margin-top:20px; }
+  @media (min-width:768px){ .why-grid { grid-template-columns:repeat(3,1fr); } }
+  .why-card { border:1px solid var(--line); border-radius:16px; padding:24px; background:var(--surface); }
+  .why-card .n { font:13px ui-monospace,monospace; color:var(--accent); }
+  .why-card h4 { margin:8px 0 8px; font-size:20px; font-weight:600; line-height:1.3; }
+  .why-card p { margin:0; color:var(--fog); }
+
+  details { margin-top:40px; border:1px solid var(--line); border-radius:16px; background:var(--surface); max-width:900px; }
+  summary { min-height:56px; padding:16px 24px; cursor:pointer; font-weight:600; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; font:20px ui-monospace,monospace; color:var(--accent); }
+  details[open] summary::after { content:"−"; }
+  .eng { padding:0 24px 24px; }
+  .eng dl { display:grid; gap:4px 24px; margin:0; max-width:62ch; }
+  .eng dt { font:13px ui-monospace,monospace; color:var(--accent); margin-top:12px; }
+  .eng dd { margin:0; color:var(--fog); overflow-wrap:anywhere; }
+  pre { margin:20px 0 0; padding:16px; border-radius:12px; background:var(--surface-2); overflow-x:auto; font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; max-width:100%; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ok" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<main class="wrap">
+  <div class="bar">
+    <span class="kicker">Concept A · Analogy-led · “Two rooms”</span>
+    <button class="toggle" id="theme" type="button" aria-label="Toggle colour theme">Theme</button>
+  </div>
+
+  <section aria-labelledby="t">
+    <div class="kicker">The architecture constraint</div>
+    <h2 id="t">Figma splits every plugin into two rooms that can’t see each other.</h2>
+    <p class="lead">One room can <b>read your design file</b> but has no screen. The other can <b>draw the interface</b> but is blind to the file. The only way between them is a note passed through the wall — so that’s exactly how the engine was designed.</p>
+
+    <div class="rooms">
+      <article class="room" aria-labelledby="r1">
+        <div class="room-head">
+          <div class="room-icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="24" height="20" rx="3"/><circle cx="16" cy="16" r="5"/><path d="M16 11v2M16 19v2M11 16h2M19 16h2"/></svg>
+          </div>
+          <div>
+            <h3 id="r1">The engine room</h3>
+            <div class="tech">Plugin sandbox · code.ts</div>
+          </div>
+        </div>
+        <ul>
+          <li><svg class="yes" width="16" height="16"><use href="#ok"/></svg><span><span class="sr">Can: </span>Reads every layer, colour, token and component in your file</span></li>
+          <li><svg class="no" width="16" height="16"><use href="#x"/></svg><span><span class="sr">Cannot: </span>Has no screen — it can’t show you anything</span></li>
+          <li><svg class="no" width="16" height="16"><use href="#x"/></svg><span><span class="sr">Cannot: </span>No internet — network access is switched off, so nothing leaves</span></li>
+        </ul>
+        <p class="job"><b>Its job:</b> walk the file, find drift, calculate the score.</p>
+      </article>
+
+      <div class="wall" aria-label="The only connection: one message">
+        <div class="slot">
+          <svg class="note" viewBox="0 0 40 28" aria-hidden="true"><rect x="2" y="2" width="36" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 4l18 12L38 4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          <div class="k">One note</div>
+          <div class="msg">ANALYSIS_<wbr>COMPLETE</div>
+          <span class="dir" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <article class="room" aria-labelledby="r2">
+        <div class="room-head">
+          <div class="room-icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="26" height="18" rx="3"/><path d="M11 27h10M16 23v4"/><path d="M8 17l4-4 3 3 5-6 4 4"/></svg>
+          </div>
+          <div>
+            <h3 id="r2">The display room</h3>
+            <div class="tech">UI iframe · React</div>
+          </div>
+        </div>
+        <ul>
+          <li><svg class="yes" width="16" height="16"><use href="#ok"/></svg><span><span class="sr">Can: </span>Draws a full interface — scores, charts, buttons</span></li>
+          <li><svg class="no" width="16" height="16"><use href="#x"/></svg><span><span class="sr">Cannot: </span>Can’t open your file — it only knows what the note says</span></li>
+          <li><svg class="no" width="16" height="16"><use href="#x"/></svg><span><span class="sr">Cannot: </span>Can’t reach in and change a single layer</span></li>
+        </ul>
+        <p class="job"><b>Its job:</b> show the score, the pillars and every issue, screen by screen.</p>
+      </article>
+    </div>
+
+    <div class="analogy">
+      <p><b>Think of a bank.</b> The vault holds everything valuable but has no counter. The teller’s window serves customers but can’t open the vault. A slot in the wall passes one envelope at a time — and the valuables never cross it.</p>
+    </div>
+
+    <div class="why">
+      <div class="kicker">Why that shaped the design</div>
+      <div class="why-grid">
+        <div class="why-card"><div class="n">01</div><h4>Private by construction</h4><p>Your design data stays in the engine room. Only the findings cross the wall — and nothing goes online.</p></div>
+        <div class="why-card"><div class="n">02</div><h4>One clear contract</h4><p>Engine and interface agree on a single typed message, so each can be built, tested and changed on its own.</p></div>
+        <div class="why-card"><div class="n">03</div><h4>Same file, same score</h4><p>The engine has no screen to worry about — it only measures. That keeps the scoring deterministic.</p></div>
+      </div>
+    </div>
+
+    <details>
+      <summary>For engineers: the actual constraint</summary>
+      <div class="eng">
+        <dl>
+          <dt>code.ts — main thread</dt>
+          <dd>Runs in Figma’s sandbox: modern JS plus the <code>figma.*</code> scene API (nodes, variables, styles). No DOM, <code>window</code>, XHR or <code>setTimeout</code>.</dd>
+          <dt>ui.html — iframe via figma.showUI()</dt>
+          <dd>Full browser APIs, so React renders here. No access to the Figma scene.</dd>
+          <dt>The bridge</dt>
+          <dd><code>figma.ui.postMessage()</code> ⇄ <code>parent.postMessage({ pluginMessage }, '*')</code> — structured-clone messages, nothing shared.</dd>
+          <dt>Network</dt>
+          <dd><code>networkAccess.allowedDomains: ["none"]</code> in the manifest — Figma blocks every outbound request.</dd>
+        </dl>
+<pre><code>// the whole contract (shape illustrative)
+type AnalysisComplete = {
+  type: "ANALYSIS_COMPLETE";
+  score: number;          // 0–100
+  grade: "A"|"B"|"C"|"D"|"F";
+  pillars: Record&lt;Pillar, number&gt;;
+  issues: Issue[];        // findings only, no node data
+};</code></pre>
+      </div>
+    </details>
+  </section>
+</main>
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('theme');
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var saved; try { saved = localStorage.getItem('concept-theme'); } catch (e) {}
+    function set(t) { root.setAttribute('data-theme', t); btn.textContent = t === 'dark' ? '☀ Light' : '☾ Dark'; btn.setAttribute('aria-pressed', t === 'dark'); }
+    set(saved || (mq.matches ? 'dark' : 'light'));
+    btn.addEventListener('click', function () {
+      var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      set(t); try { localStorage.setItem('concept-theme', t); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>

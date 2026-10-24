@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compact 1 — Flow Strip</title>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--surface-2:#efede7;--text:#0b0d12;--fog:#2a303c;--line:rgba(11,13,18,.14);--accent:#b45309;--accent-soft:rgba(180,83,9,.10);--no:#8a2a2a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 16px 40px}
+@media (min-width:768px){.wrap{padding:32px 40px 56px}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.kicker{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin:0}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.toggle{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-size:clamp(22px,2.6vw,34px);line-height:1.18;font-weight:500;letter-spacing:-.01em;margin:8px 0 0;max-width:36ch}
+.lead{margin:10px 0 0;max-width:62ch;color:var(--fog)}
+.lead b,.diagram b{color:var(--text);font-weight:600}
+.diagram{margin-top:22px}
+.mono,.tech,.msg{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tech{font-size:12px;letter-spacing:.03em;color:var(--accent);line-height:1.4}
+.msg{display:inline-block;font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px dashed var(--accent);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ph{font-size:12px;color:var(--fog);border:1px dotted var(--fog);border-radius:4px;padding:0 5px;white-space:nowrap}
+.foot{margin:12px 0 0;font-size:16px;color:var(--fog);max-width:62ch}
+.foot small{font-size:12px;display:block;margin-top:2px}
+.cap{margin:28px 0 0;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fog)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.strip{display:grid;gap:8px;grid-template-columns:1fr 1fr;grid-template-areas:"you you" "pan eng" "wall wall"}
+.you{grid-area:you}.pan{grid-area:pan}.eng{grid-area:eng}.wall{grid-area:wall}.hop{display:none!important}
+.node.you p{display:inline;margin:0 0 0 6px}.you .who{display:inline}
+.pan .tech,.eng .tech{display:block;margin:0}
+.node{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.node.eng{border-color:var(--accent)}
+.who{display:block;font-weight:600}
+.who .tech{font-weight:400;margin-left:6px}
+.node p{margin:2px 0 0;color:var(--fog)}
+.hop{display:flex;align-items:center;justify-content:center;color:var(--fog);font-size:13px;gap:6px;min-height:18px}
+.wall{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0}
+.wall::before{content:"";position:absolute;left:50%;top:-74px;height:70px;border-left:2px dashed var(--fog);opacity:.45}
+.wall{padding:2px 0 0}
+.wall .lane{position:relative;display:flex;gap:6px;align-items:center;background:var(--bg);padding:0 8px;font-size:13px;color:var(--fog);flex-wrap:wrap;justify-content:center}
+.wall .walllbl{display:none}
+.wall .msg{animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 var(--accent-soft)}50%{box-shadow:0 0 0 7px var(--accent-soft)}}
+.dot{display:none}
+@media (min-width:860px){
+ .strip{grid-template-columns:minmax(0,.8fr) 28px minmax(0,1fr) minmax(210px,1.05fr) minmax(0,1fr);grid-template-areas:"you hop pan wall eng";gap:0;align-items:stretch}
+ .hop{display:flex!important;grid-area:hop}.node.you p{display:block;margin:8px 0 0}.you .who{display:block}
+ .node{padding:18px 18px 20px;border-radius:16px}
+ .node p{margin-top:8px}
+ .who .tech{display:block;margin:2px 0 0}
+ .hop{flex-direction:column}
+ .wall{justify-content:center;gap:56px;padding:0 6px}
+ .wall::before{left:50%;top:0;bottom:0;height:auto}
+ .wall .walllbl{display:block;position:absolute;left:50%;top:6px;transform:translateX(-50%);font-size:12px;color:var(--fog);background:var(--bg);padding:0 4px}
+ .wall .lane{flex-direction:column;gap:4px;padding:6px 8px;border-radius:10px}
+ .wire{position:absolute;left:8px;right:8px;top:50%;height:2px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.5}
+ .dot{display:block;position:absolute;top:calc(50% - 5px);width:10px;height:10px;border-radius:50%;background:var(--accent);animation:travel 2.4s ease-in-out infinite}
+ @keyframes travel{0%{left:calc(100% - 14px);opacity:0}15%{opacity:1}85%{opacity:1}100%{left:4px;opacity:0}}
+}
+@media (prefers-reduced-motion:reduce){.dot{left:calc(50% - 5px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span class="kicker">Compact concept 1 &middot; Flow strip</span><button class="toggle" id="theme" type="button">Theme</button></div>
+<section id="block" aria-labelledby="h">
+<p class="kicker">The architecture constraint</p>
+<h2 id="h">The part that reads your file can&rsquo;t draw. The part that draws can&rsquo;t read.</h2>
+<p class="lead">Figma splits every plugin in two. Your file stays with one half; <b>one message</b> crosses back.</p>
+<div class="diagram">
+<div class="strip" role="list" aria-label="One analysis, left to right">
+  <div class="node you" role="listitem"><span class="who">You</span><p>Press <b>Run analysis</b>, read the score.</p></div>
+  <div class="hop" aria-hidden="true">&harr;</div>
+  <div class="node pan" role="listitem"><span class="who">The panel <span class="tech">UI iframe &middot; React</span></span><p>Draws anything. <b>Can&rsquo;t see your file.</b></p></div>
+  <div class="wall" role="listitem" aria-label="The wall between them: one message each way">
+    <span class="walllbl">the wall</span>
+    <span class="wire" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span>
+    <span class="lane">run request &rarr; <span class="ph">placeholder name</span></span>
+    <span class="lane"><span class="msg">&larr; ANALYSIS_COMPLETE</span><span>findings only, never the file</span></span>
+  </div>
+  <div class="node eng" role="listitem"><span class="who">The engine <span class="tech">sandbox &middot; code.ts</span></span><p>Reads every layer, scores it. <b>No screen, no internet.*</b></p></div>
+</div>
+<p class="foot"><small>*&ldquo;No internet&rdquo; assumes the manifest&rsquo;s <span class="mono">allowedDomains</span> blocks the network; not yet verified.</small></p>
+</div>
+</section>
+<p class="cap">block height (kicker &rarr; diagram): <b>390px</b> desktop 1440&times;900 / <b>540px</b> mobile 375&times;812 &middot; headless Chrome &middot; budget 640 / 560 &middot; this window: <span id="live">&ndash;</span></p>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('theme');
+function cur(){return r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function lab(){b.textContent=cur()==='dark'?'Light theme':'Dark theme'}
+b.onclick=function(){r.dataset.theme=cur()==='dark'?'light':'dark';lab()};lab();
+function m(){var h=Math.round(document.getElementById('block').getBoundingClientRect().height);
+document.getElementById('live').textContent=h+'px at '+innerWidth+'px wide';
+var d=document.body.dataset;d.h=h;d.sw=document.documentElement.scrollWidth;d.w=innerWidth}
+addEventListener('resize',m);addEventListener('load',m);m()})();
+</script>
+</body>
+</html>

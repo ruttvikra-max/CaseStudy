@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compact 2 — Mirror Ledger</title>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--surface-2:#efede7;--text:#0b0d12;--fog:#2a303c;--line:rgba(11,13,18,.14);--accent:#b45309;--accent-soft:rgba(180,83,9,.10);--no:#8a2a2a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 16px 40px}
+@media (min-width:768px){.wrap{padding:32px 40px 56px}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.kicker{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin:0}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.toggle{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-size:clamp(22px,2.6vw,34px);line-height:1.18;font-weight:500;letter-spacing:-.01em;margin:8px 0 0;max-width:36ch}
+.lead{margin:10px 0 0;max-width:62ch;color:var(--fog)}
+.lead b,.diagram b{color:var(--text);font-weight:600}
+.diagram{margin-top:22px}
+.mono,.tech,.msg{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tech{font-size:12px;letter-spacing:.03em;color:var(--accent);line-height:1.4}
+.msg{display:inline-block;font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px dashed var(--accent);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ph{font-size:12px;color:var(--fog);border:1px dotted var(--fog);border-radius:4px;padding:0 5px;white-space:nowrap}
+.foot{margin:12px 0 0;font-size:16px;color:var(--fog);max-width:62ch}
+.foot small{font-size:12px;display:block;margin-top:2px}
+.cap{margin:28px 0 0;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fog)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.lens{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);margin-bottom:8px}
+.lens button{min-height:38px;padding:0 14px;border:0;border-radius:999px;background:transparent;font-size:14px;color:var(--fog)}
+.lens button[aria-pressed="true"]{background:var(--accent-soft);color:var(--text);font-weight:600}
+.fly{display:grid;grid-template-columns:minmax(0,1fr) 104px minmax(0,1fr);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.fly>*{padding:10px 12px}
+.c{background:var(--surface-2);border-left:2px dashed var(--line);border-right:2px dashed var(--line);text-align:center;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center}
+.c.top{font:12px/1.4 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--fog);font-weight:400}
+.l{text-align:right;justify-content:flex-end}
+.hd h3{margin:0;font-size:18px;font-weight:600;line-height:1.2}
+
+.row{border-top:1px solid var(--line)}
+.cell{display:flex;align-items:center;gap:8px}
+.cell.l{flex-direction:row-reverse}
+.cell svg{flex:none}
+.yes svg{color:var(--accent)} .no svg{color:var(--no)}
+.no .sw{color:var(--fog)}
+.sw{display:grid}.sw>span{grid-area:1/1}
+[data-lens="plain"] .t,[data-lens="tech"] .p{visibility:hidden}
+.t{font-family:ui-monospace,Menlo,monospace;font-size:14px}
+.slot{grid-column:1/-1;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:4px 10px;flex-wrap:wrap;padding:10px!important;background:linear-gradient(90deg,transparent,var(--accent-soft),transparent)}
+.slot .sw{text-align:center;color:var(--fog)}
+.end{display:none;font-size:12px;color:var(--fog)}
+.hd .tech{display:block}
+.slot .msg{animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 var(--accent-soft)}50%{box-shadow:0 0 0 7px var(--accent-soft)}}
+.fly>*{padding:8px 10px}.hd h3{font-size:17px}
+@media (min-width:860px){.fly{grid-template-columns:minmax(0,1fr) 180px minmax(0,1fr)}.end{display:inline}.fly>*{padding:16px 22px}.c{font-size:16px}.slot{padding:18px}.hd h3{font-size:20px}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span class="kicker">Compact concept 2 &middot; Mirror ledger</span><button class="toggle" id="theme" type="button">Theme</button></div>
+<section id="block" aria-labelledby="h">
+<p class="kicker">The architecture constraint</p>
+<h2 id="h">The part that reads your file can&rsquo;t draw. The part that draws can&rsquo;t read.</h2>
+<p class="lead">Figma splits every plugin in two. Your file stays with one half; <b>one message</b> crosses back.</p>
+<div class="diagram">
+<div class="lens" role="group" aria-label="Wording"><button type="button" aria-pressed="true" data-l="plain">Plain English</button><button type="button" aria-pressed="false" data-l="tech">Engineer</button></div>
+<div class="fly" id="fly" data-lens="plain" role="table" aria-label="What each half of the plugin can do">
+  <div class="hd l" role="columnheader"><h3>Engine</h3><span class="tech">code.ts</span></div>
+  <div class="c top" role="columnheader">the wall</div>
+  <div class="hd r" role="columnheader"><h3>Panel</h3><span class="tech">UI iframe</span></div>
+  <div class="cell l row yes" role="cell"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr">Yes: </span><span class="sw"><span class="p">Every layer</span><span class="t">figma.* API</span></span></div>
+  <div class="c row" role="rowheader"><span class="sw"><span class="p">Read your file</span><span class="t">Scene access</span></span></div>
+  <div class="cell r row no" role="cell"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span class="sr">No: </span><span class="sw"><span class="p">Can&rsquo;t</span><span class="t">no scene</span></span></div>
+  <div class="cell l row no" role="cell"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span class="sr">No: </span><span class="sw"><span class="p">Can&rsquo;t</span><span class="t">no DOM</span></span></div>
+  <div class="c row" role="rowheader"><span class="sw"><span class="p">Draw on screen</span><span class="t">DOM + render</span></span></div>
+  <div class="cell r row yes" role="cell"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr">Yes: </span><span class="sw"><span class="p">Score &amp; issues</span><span class="t">React</span></span></div>
+  <div class="slot" role="row"><span class="end mono">engine</span><span class="msg">ANALYSIS_COMPLETE &rarr;</span><span class="sw"><span class="p">findings cross the wall, never the file</span><span class="t">figma.ui.postMessage(findings)</span></span><span class="end mono">panel</span></div>
+</div>
+<p class="foot"><small>Engine likely offline too (<span class="mono">allowedDomains</span>, unverified).</small></p>
+</div>
+</section>
+<p class="cap">block height (kicker &rarr; diagram): <b>506px</b> desktop 1440&times;900 / <b>528px</b> mobile 375&times;812 &middot; headless Chrome &middot; budget 640 / 560 &middot; this window: <span id="live">&ndash;</span></p>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('theme');
+function cur(){return r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function lab(){b.textContent=cur()==='dark'?'Light theme':'Dark theme'}
+b.onclick=function(){r.dataset.theme=cur()==='dark'?'light':'dark';lab()};lab();
+function m(){var h=Math.round(document.getElementById('block').getBoundingClientRect().height);
+document.getElementById('live').textContent=h+'px at '+innerWidth+'px wide';
+var d=document.body.dataset;d.h=h;d.sw=document.documentElement.scrollWidth;d.w=innerWidth}
+addEventListener('resize',m);addEventListener('load',m);m()})();
+
+document.querySelectorAll('.lens button').forEach(function(b){b.onclick=function(){
+document.getElementById('fly').dataset.lens=b.dataset.l;
+document.querySelectorAll('.lens button').forEach(function(x){x.setAttribute('aria-pressed',x===b)})}});
+</script>
+</body>
+</html>

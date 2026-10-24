@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept B — Swim Lanes</title>
+<style>
+  :root {
+    --bg:#f7f6f2; --surface:#fff; --surface-2:#efede7; --text:#0b0d12; --fog:#2a303c;
+    --line:rgba(11,13,18,.12); --accent:#b45309; --accent-soft:rgba(180,83,9,.10);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#06070a; --surface:#0b0d12; --surface-2:#11141b; --text:#f5f7ff; --fog:#aeb6c2;
+      --line:rgba(255,255,255,.10); --accent:#ff8a1e; --accent-soft:rgba(255,138,30,.12);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#06070a; --surface:#0b0d12; --surface-2:#11141b; --text:#f5f7ff; --fog:#aeb6c2;
+    --line:rgba(255,255,255,.10); --accent:#ff8a1e; --accent-soft:rgba(255,138,30,.12);
+    color-scheme: dark;
+  }
+  * { box-sizing:border-box; }
+  button { white-space:nowrap; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:1200px; margin:0 auto; padding:72px 16px 96px; }
+  @media (min-width:768px){ .wrap { padding:96px 40px 120px; } }
+  .bar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:48px; }
+  .kicker { font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--fog); opacity:.8; }
+  button { min-height:44px; padding:0 18px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:15px; cursor:pointer; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:var(--bg); font-weight:600; }
+  button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  h2 { font-size:clamp(28px,4vw,48px); line-height:1.12; letter-spacing:-.01em; font-weight:500; margin:12px 0 0; max-width:24ch; }
+  .lead { max-width:62ch; color:var(--fog); margin:20px 0 0; font-size:18px; }
+  .lead b { color:var(--text); font-weight:600; }
+  code, .mono { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+
+  /* lanes header */
+  .board { margin-top:48px; border:1px solid var(--line); border-radius:20px; background:var(--surface); overflow:hidden; }
+  .lanes { display:grid; grid-template-columns:1fr; border-bottom:1px solid var(--line); }
+  @media (min-width:900px){ .lanes, .step { grid-template-columns:repeat(3,1fr); } }
+  .lane { padding:20px 24px; border-top:1px solid var(--line); }
+  .lane:first-child { border-top:0; }
+  @media (min-width:900px){ .lane { border-top:0; border-left:1px solid var(--line); } .lane:first-child { border-left:0; } }
+  .lane h3 { margin:0; font-size:20px; line-height:1.3; font-weight:600; display:flex; align-items:center; gap:10px; }
+  .dot { width:12px; height:12px; border-radius:50%; flex:none; }
+  .l-you .dot { background:var(--fog); }
+  .l-ui .dot { background:transparent; border:2px solid var(--accent); }
+  .l-eng .dot { background:var(--accent); }
+  .lane .tech { font:13px ui-monospace,monospace; color:var(--accent); }
+  .lane p { margin:8px 0 0; color:var(--fog); font-size:16px; }
+  .lane .cant { color:var(--fog); }
+  .lane .cant b { color:var(--text); }
+
+  /* steps */
+  ol.steps { list-style:none; margin:0; padding:8px 0; position:relative; }
+  @media (min-width:900px){
+    ol.steps::before { content:""; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(to right,transparent calc(33.333% - .5px),var(--line) calc(33.333% - .5px) calc(33.333% + .5px),transparent calc(33.333% + .5px) calc(66.666% - .5px),var(--line) calc(66.666% - .5px) calc(66.666% + .5px),transparent calc(66.666% + .5px)); }
+  }
+  .step { display:grid; grid-template-columns:1fr; padding:8px 16px; }
+  @media (min-width:900px){ .step { padding:8px 0; grid-template-columns:repeat(3,1fr); } }
+  .card { position:relative; border:1px solid var(--line); border-radius:14px; padding:16px 18px; background:var(--surface); margin:0; transition:border-color .25s, background .25s, opacity .25s; }
+  @media (min-width:900px){ .card { margin:0 16px; } }
+  .card .num { font:13px ui-monospace,monospace; color:var(--accent); }
+  .card .who { font:12px ui-monospace,monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--fog); margin-left:8px; }
+  .card p { margin:4px 0 0; }
+  .card .t { display:block; margin-top:6px; font:13px/1.5 ui-monospace,monospace; color:var(--fog); }
+  .msg { border-style:dashed; border-color:var(--accent); }
+  .msg .label { display:inline-block; margin-top:8px; padding:2px 10px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font:13px ui-monospace,monospace; word-break:break-all; }
+  .arrow { display:block; font-size:18px; color:var(--accent); }
+
+  /* column placement — desktop only */
+  @media (min-width:900px){
+    .c1 { grid-column:1; } .c2 { grid-column:2; } .c3 { grid-column:3; }
+    .c12 { grid-column:1 / 3; } .c23 { grid-column:2 / 4; }
+  }
+  /* playback state: everything visible by default; playback only dims the rest */
+  .playing .card { opacity:.6; }
+  .playing .card.on { opacity:1; border-color:var(--accent); background:var(--accent-soft); }
+
+  .controls { display:flex; flex-wrap:wrap; gap:8px; padding:16px 24px; border-top:1px solid var(--line); align-items:center; }
+  .controls .status { color:var(--fog); font-size:15px; margin-left:auto; }
+  @media (max-width:520px){ .controls .status { margin-left:0; width:100%; } }
+
+  .why { margin-top:56px; max-width:62ch; }
+  .why p { color:var(--fog); }
+  .why b { color:var(--text); }
+  @media (prefers-reduced-motion: reduce) { .card { transition:none; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="bar">
+    <span class="kicker">Concept B · Sequence · “Swim lanes”</span>
+    <button id="theme" type="button" aria-label="Toggle colour theme">Theme</button>
+  </div>
+
+  <section aria-labelledby="t">
+    <div class="kicker">The architecture constraint</div>
+    <h2 id="t">The part that reads your file can’t draw. The part that draws can’t read.</h2>
+    <p class="lead">Figma runs every plugin as two separate programs. Follow one analysis from click to score — your file only ever lives with the engine, and <b>a single message</b> is all that crosses back.</p>
+
+    <div class="board" id="board">
+      <div class="lanes" role="list">
+        <div class="lane l-you" role="listitem">
+          <h3><span class="dot" aria-hidden="true"></span>You</h3>
+          <p>The designer, inside Figma.</p>
+        </div>
+        <div class="lane l-ui" role="listitem">
+          <h3><span class="dot" aria-hidden="true"></span>The panel</h3>
+          <div class="tech">UI iframe · React</div>
+          <p class="cant">Can draw anything. <b>Can’t see your file.</b></p>
+        </div>
+        <div class="lane l-eng" role="listitem">
+          <h3><span class="dot" aria-hidden="true"></span>The engine</h3>
+          <div class="tech">Plugin sandbox · code.ts</div>
+          <p class="cant">Reads every layer. <b>No screen, no internet.</b></p>
+        </div>
+      </div>
+
+      <ol class="steps" id="steps">
+        <li class="step"><div class="card c1"><span class="num">01</span><span class="who">You</span>
+          <p>You press <b>Run analysis</b> in the plugin panel.</p></div></li>
+        <li class="step"><div class="card msg c23"><span class="num">02</span><span class="who">Panel → Engine</span>
+          <p>The panel can’t read the file, so it asks the engine to.</p>
+          <span class="label">postMessage · run request</span></div></li>
+        <li class="step"><div class="card c3"><span class="num">03</span><span class="who">Engine</span>
+          <p>Walks every frame, instance and token in the file.</p>
+          <span class="t">figma.* scene API — traversal</span></div></li>
+        <li class="step"><div class="card c3"><span class="num">04</span><span class="who">Engine</span>
+          <p>Checks the four pillars and computes the drift score. Same file, same score.</p>
+          <span class="t">deterministic scoring, no network</span></div></li>
+        <li class="step"><div class="card msg c23"><span class="num">05</span><span class="who">Engine → Panel</span>
+          <p>Sends back <b>the findings — never the file itself.</b></p>
+          <span class="label">ANALYSIS_COMPLETE</span></div></li>
+        <li class="step"><div class="card c12"><span class="num">06</span><span class="who">Panel → You</span>
+          <p>Draws the score, the pillars and each issue, screen by screen.</p>
+          <span class="t">React renders from the message alone</span></div></li>
+      </ol>
+
+      <div class="controls">
+        <button class="primary" id="play" type="button">▶ Play the flow</button>
+        <button id="next" type="button">Next step</button>
+        <button id="reset" type="button">Show all</button>
+        <span class="status" id="status" aria-live="polite">All 6 steps shown</span>
+      </div>
+    </div>
+
+    <div class="why">
+      <div class="kicker">Why that shaped the design</div>
+      <p>Because the two sides can only talk in messages, the engine and the interface became <b>independent systems with one contract</b>. Your design data never crosses into the panel, network access is switched off in the plugin manifest, and the engine — with no screen to manage — only measures. That’s what keeps the score private and repeatable.</p>
+    </div>
+  </section>
+</main>
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('theme');
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var saved; try { saved = localStorage.getItem('concept-theme'); } catch (e) {}
+    function set(t) { root.setAttribute('data-theme', t); btn.textContent = t === 'dark' ? '☀ Light' : '☾ Dark'; btn.setAttribute('aria-pressed', t === 'dark'); }
+    set(saved || (mq.matches ? 'dark' : 'light'));
+    btn.addEventListener('click', function () {
+      var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      set(t); try { localStorage.setItem('concept-theme', t); } catch (e) {}
+    });
+
+    // stepper: highlights one step at a time; nothing is ever hidden
+    var board = document.getElementById('board');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('#steps .card'));
+    var status = document.getElementById('status');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var i = -1, timer = null;
+    function show(n) {
+      i = n; board.classList.add('playing');
+      cards.forEach(function (c, k) { c.classList.toggle('on', k === n); });
+      status.textContent = 'Step ' + (n + 1) + ' of ' + cards.length + ': ' + cards[n].querySelector('p').textContent;
+    }
+    function stop() { clearInterval(timer); timer = null; document.getElementById('play').textContent = '▶ Play the flow'; }
+    function all() { stop(); i = -1; board.classList.remove('playing'); cards.forEach(function (c) { c.classList.remove('on'); }); status.textContent = 'All 6 steps shown'; }
+    document.getElementById('next').addEventListener('click', function () { stop(); show((i + 1) % cards.length); });
+    document.getElementById('reset').addEventListener('click', all);
+    document.getElementById('play').addEventListener('click', function () {
+      if (timer) { stop(); return; }
+      // reduced motion: no autoplay — advance one step per press instead
+      if (reduce.matches) { show((i + 1) % cards.length); return; }
+      show(0); this.textContent = '❚❚ Pause';
+      timer = setInterval(function () { if (i >= cards.length - 1) { all(); } else { show(i + 1); } }, 2200);
+    });
+  })();
+</script>
+</body>
+</html>
