@@ -30,8 +30,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${roboto.variable} ${robotoMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${roboto.variable} ${robotoMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark")}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-void text-pearl">
         {children}
       </body>

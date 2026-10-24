@@ -46,7 +46,7 @@ export default function Hero() {
         </Reveal>
 
         {/* divider */}
-        <Reveal delay={240} className="mt-12 h-px w-full bg-white/10" />
+        <Reveal delay={240} className="mt-12 h-px w-full bg-ink/10" />
 
         {/* meta grid */}
         <Reveal delay={300}>
@@ -54,9 +54,9 @@ export default function Hero() {
             {META.map((m) => (
               <div
                 key={m.label}
-                className="border-l border-white/10 pl-4 first:border-l-0 first:pl-0 md:border-l md:pl-5 md:first:border-l-0 md:first:pl-0"
+                className="border-l border-ink/10 pl-4 first:border-l-0 first:pl-0 md:border-l md:pl-5 md:first:border-l-0 md:first:pl-0"
               >
-                <dt className="kicker mb-2 text-fog/55">{m.label}</dt>
+                <dt className="kicker mb-2 text-fog/65">{m.label}</dt>
                 <dd className="text-sm text-pearl/90">{m.value}</dd>
               </div>
             ))}

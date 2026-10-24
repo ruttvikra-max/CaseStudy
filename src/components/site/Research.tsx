@@ -30,7 +30,7 @@ export default function Research() {
   return (
     <section
       id="research"
-      className="relative border-t border-white/5 bg-void-1 py-28 sm:py-36"
+      className="relative border-t border-ink/5 bg-void-1 py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -41,7 +41,7 @@ export default function Research() {
         />
 
         {/* hero stat */}
-        <div className="mt-16 grid items-end gap-10 border-y border-white/10 py-12 md:grid-cols-[auto_1fr]">
+        <div className="mt-16 grid items-end gap-10 border-y border-ink/10 py-12 md:grid-cols-[auto_1fr]">
           <Reveal className="flex items-end gap-4">
             <span className="font-display text-[clamp(96px,16vw,200px)] font-normal leading-[0.8] text-accent-primary">
               67%
@@ -61,7 +61,7 @@ export default function Research() {
         {/* supporting findings */}
         <div className="mt-16 grid grid-cols-1 gap-10 md:grid-cols-3">
           {FINDINGS.map((f, i) => (
-            <Reveal key={f.head} delay={i * 90} className="border-t border-white/12 pt-6">
+            <Reveal key={f.head} delay={i * 90} className="border-t border-ink/12 pt-6">
               <div className="font-display text-[clamp(36px,4vw,52px)] font-normal leading-none text-pearl">
                 {f.stat}
               </div>
@@ -76,7 +76,7 @@ export default function Research() {
         {/* rework distribution */}
         <div className="mt-24 grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
           <div>
-            <Reveal className="kicker mb-3 text-fog/45">The cost in code</Reveal>
+            <Reveal className="kicker mb-3 text-fog/65">The cost in code</Reveal>
             <Reveal
               as="h3"
               delay={60}
@@ -101,7 +101,7 @@ export default function Research() {
                   </span>
                   <span className="font-display text-lg text-pearl">{r.pct}%</span>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-white/8">
+                <div className="h-2 overflow-hidden rounded-full bg-ink/8">
                   <div
                     className="h-full rounded-full bg-accent-primary/80"
                     style={{ width: `${r.pct * 2}%` }}

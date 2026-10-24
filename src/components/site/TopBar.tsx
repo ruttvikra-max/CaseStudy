@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
 
 export default function TopBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -16,7 +17,7 @@ export default function TopBar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? "border-b border-white/5 bg-void/70 backdrop-blur-md"
+          ? "border-b border-ink/5 bg-void/70 backdrop-blur-md"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -32,6 +33,18 @@ export default function TopBar() {
             Design&nbsp;System&nbsp;Intelligence&nbsp;Engine
           </span>
           <span className="kicker text-accent-primary">2026</span>
+          <button
+            type="button"
+            aria-label="Toggle light/dark theme"
+            onClick={() => {
+              const dark = document.documentElement.classList.toggle("dark");
+              try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch {}
+            }}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/15 text-pearl transition-colors hover:bg-ink/10"
+          >
+            <Sun className="hidden h-4 w-4 dark:block" />
+            <Moon className="h-4 w-4 dark:hidden" />
+          </button>
         </div>
       </div>
     </header>

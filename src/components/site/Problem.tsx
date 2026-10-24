@@ -34,7 +34,7 @@ const IMPACT = [
 
 export default function Problem() {
   return (
-    <section id="problem" className="relative border-t border-white/5 bg-void py-28 sm:py-36">
+    <section id="problem" className="relative border-t border-ink/5 bg-void py-28 sm:py-36">
       <div className="wrap">
         <SectionHeader
           index="01"
@@ -44,14 +44,14 @@ export default function Problem() {
         />
 
         {/* four breakdown modes */}
-        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-ink/8 bg-ink/8 sm:grid-cols-2 lg:grid-cols-4">
           {BREAKDOWNS.map((b, i) => (
             <Reveal
               key={b.title}
               delay={i * 70}
               className="group bg-void-1 p-7 transition-colors duration-300 hover:bg-void-2"
             >
-              <div className="font-display text-3xl text-white/12 transition-colors duration-300 group-hover:text-accent-primary/40">
+              <div className="font-display text-3xl text-ink/12 transition-colors duration-300 group-hover:text-accent-primary/40">
                 {b.n}
               </div>
               <h3 className="mt-5 text-base font-medium text-pearl">{b.title}</h3>
@@ -62,7 +62,7 @@ export default function Problem() {
 
         {/* operational impact */}
         <div className="mt-28">
-          <Reveal className="kicker mb-3 text-fog/45">Operational impact</Reveal>
+          <Reveal className="kicker mb-3 text-fog/65">Operational impact</Reveal>
           <Reveal
             as="h3"
             delay={60}
@@ -76,7 +76,7 @@ export default function Problem() {
               <Reveal
                 key={it.tag}
                 delay={i * 70}
-                className="border-t border-white/12 pt-6 lg:pr-6"
+                className="border-t border-ink/12 pt-6 lg:pr-6"
               >
                 <div className="whitespace-nowrap font-display text-[clamp(40px,5vw,60px)] font-normal leading-none text-accent-primary">
                   {it.stat}
@@ -90,7 +90,7 @@ export default function Problem() {
 
         {/* drift lifecycle */}
         <div className="mt-28">
-          <Reveal className="kicker mb-3 text-fog/45">The drift lifecycle</Reveal>
+          <Reveal className="kicker mb-3 text-fog/65">The drift lifecycle</Reveal>
           <Reveal
             as="h3"
             delay={60}
@@ -99,7 +99,7 @@ export default function Problem() {
             Drift isn&rsquo;t one issue. It&rsquo;s a loop that compounds.
           </Reveal>
 
-          <div className="mt-12 rounded-2xl border border-white/8 bg-void-1 p-6 sm:p-10">
+          <div className="mt-12 rounded-2xl border border-ink/8 bg-void-1 p-6 sm:p-10">
             <DriftCycle />
           </div>
         </div>

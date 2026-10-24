@@ -39,7 +39,7 @@ export default function TurningPoint() {
   return (
     <section
       id="decision"
-      className="relative border-t border-white/5 bg-void py-28 sm:py-36"
+      className="relative border-t border-ink/5 bg-void py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -89,7 +89,7 @@ export default function TurningPoint() {
                 className={`flex items-center justify-between gap-4 rounded-xl border p-5 transition-colors ${
                   o.chosen
                     ? "border-accent-primary/40 bg-accent-soft"
-                    : "border-white/8 bg-void-1"
+                    : "border-ink/8 bg-void-1"
                 }`}
               >
                 <div>
@@ -106,7 +106,7 @@ export default function TurningPoint() {
                   {o.chosen ? (
                     <span className="text-accent-primary">✓ Chosen</span>
                   ) : (
-                    <span className="text-white/25">Ruled out</span>
+                    <span className="text-ink/25">Ruled out</span>
                   )}
                 </span>
               </div>

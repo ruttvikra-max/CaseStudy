@@ -47,7 +47,7 @@ export default function Solution() {
   return (
     <section
       id="solution"
-      className="relative border-t border-white/5 bg-void-1 py-28 sm:py-36"
+      className="relative border-t border-ink/5 bg-void-1 py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -59,9 +59,9 @@ export default function Solution() {
 
         {/* two-environment model */}
         <div className="mt-16">
-          <Reveal className="kicker mb-5 text-fog/45">The architecture constraint</Reveal>
+          <Reveal className="kicker mb-5 text-fog/65">The architecture constraint</Reveal>
           <div className="grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr]">
-            <Reveal className="rounded-2xl border border-white/8 bg-void-2 p-7">
+            <Reveal className="rounded-2xl border border-ink/8 bg-void-2 p-7">
               <div className="font-mono text-xs uppercase tracking-wider text-accent-primary/80">
                 Plugin sandbox · code.ts
               </div>
@@ -70,7 +70,7 @@ export default function Solution() {
                 <li>✗ No DOM, no window</li>
                 <li>✗ No network access</li>
               </ul>
-              <p className="mt-4 text-xs text-fog/55">
+              <p className="mt-4 text-xs text-fog/65">
                 Runs traversal, analysis, scoring.
               </p>
             </Reveal>
@@ -79,16 +79,16 @@ export default function Solution() {
               delay={80}
               className="flex flex-col items-center justify-center px-2 py-4 md:py-0"
             >
-              <div className="font-mono text-[10px] uppercase tracking-wider text-fog/50">
+              <div className="font-mono text-[10px] uppercase tracking-wider text-fog/65">
                 postMessage
               </div>
               <div className="my-2 text-accent-primary">→</div>
-              <div className="font-mono text-[10px] text-fog/40">
+              <div className="font-mono text-[10px] text-fog/65">
                 ANALYSIS_COMPLETE
               </div>
             </Reveal>
 
-            <Reveal delay={120} className="rounded-2xl border border-white/8 bg-void-2 p-7">
+            <Reveal delay={120} className="rounded-2xl border border-ink/8 bg-void-2 p-7">
               <div className="font-mono text-xs uppercase tracking-wider text-accent-primary/80">
                 UI iframe · React
               </div>
@@ -97,7 +97,7 @@ export default function Solution() {
                 <li>✗ No Figma file API</li>
                 <li>✗ Blind to the design data</li>
               </ul>
-              <p className="mt-4 text-xs text-fog/55">
+              <p className="mt-4 text-xs text-fog/65">
                 Renders score, pillars, per-screen issues.
               </p>
             </Reveal>
@@ -112,8 +112,8 @@ export default function Solution() {
 
         {/* Ingest -> Scan -> Detect -> Report */}
         <div className="mt-24">
-          <Reveal className="kicker mb-8 text-fog/45">How it works</Reveal>
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
+          <Reveal className="kicker mb-8 text-fog/65">How it works</Reveal>
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-ink/8 bg-ink/8 sm:grid-cols-2 lg:grid-cols-4">
             {FLOW.map((f, i) => (
               <Reveal key={f.step} delay={i * 80} className="bg-void-1 p-7">
                 <div className="flex items-baseline gap-3">
@@ -131,7 +131,7 @@ export default function Solution() {
         {/* outputs (Folder) + screens placeholders */}
         <div className="mt-24 grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div>
-            <Reveal className="kicker mb-3 text-fog/45">Two deliverables</Reveal>
+            <Reveal className="kicker mb-3 text-fog/65">Two deliverables</Reveal>
             <Reveal
               as="h3"
               delay={60}
@@ -156,17 +156,17 @@ export default function Solution() {
               {SCREENS.map((s) => (
                 <div
                   key={s.label}
-                  className="flex aspect-[4/3] flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-void-2/60 p-4 text-center"
+                  className="flex aspect-[4/3] flex-col items-center justify-center rounded-xl border border-dashed border-ink/15 bg-void-2/60 p-4 text-center"
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-fog/40">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-fog/65">
                     Screen
                   </span>
                   <span className="mt-2 text-sm text-pearl/80">{s.label}</span>
-                  <span className="mt-1 text-xs text-fog/45">{s.note}</span>
+                  <span className="mt-1 text-xs text-fog/65">{s.note}</span>
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-center text-xs text-fog/40">
+            <p className="mt-4 text-center text-xs text-fog/65">
               Real plugin screens drop in here — development in progress.
             </p>
           </Reveal>

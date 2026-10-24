@@ -20,7 +20,7 @@ export default function UnderTheHood() {
   return (
     <section
       id="under-the-hood"
-      className="relative border-t border-white/5 bg-void py-28 sm:py-36"
+      className="relative border-t border-ink/5 bg-void py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -31,7 +31,7 @@ export default function UnderTheHood() {
         />
 
         {/* analyzers with weight bars */}
-        <div className="mt-16 space-y-px overflow-hidden rounded-2xl border border-white/8">
+        <div className="mt-16 space-y-px overflow-hidden rounded-2xl border border-ink/8">
           {ANALYZERS.map((a, i) => (
             <Reveal
               key={a.name}
@@ -39,7 +39,7 @@ export default function UnderTheHood() {
               className="grid items-center gap-5 bg-void-1 p-7 sm:grid-cols-[auto_1fr_auto] sm:gap-8"
             >
               <div className="flex items-center gap-5">
-                <span className="font-display text-3xl text-white/12">{a.n}</span>
+                <span className="font-display text-3xl text-ink/12">{a.n}</span>
                 <div className="max-w-md">
                   <h3 className="font-sans text-base font-medium text-pearl">
                     {a.name}
@@ -49,7 +49,7 @@ export default function UnderTheHood() {
                   </p>
                 </div>
               </div>
-              <div className="hidden h-2 overflow-hidden rounded-full bg-white/8 sm:block sm:w-40 lg:w-64">
+              <div className="hidden h-2 overflow-hidden rounded-full bg-ink/8 sm:block sm:w-40 lg:w-64">
                 <div
                   className="h-full rounded-full bg-accent-primary/80"
                   style={{ width: `${a.weight * 2.2}%` }}
@@ -65,7 +65,7 @@ export default function UnderTheHood() {
         {/* scoring as trust */}
         <div className="mt-24 grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-start">
           <div>
-            <Reveal className="kicker mb-3 text-fog/45">Scoring as trust</Reveal>
+            <Reveal className="kicker mb-3 text-fog/65">Scoring as trust</Reveal>
             <Reveal
               as="h3"
               delay={60}
@@ -86,7 +86,7 @@ export default function UnderTheHood() {
                 number reads as honest: not flattery, not panic.
               </p>
             </Reveal>
-            <Reveal delay={160} className="mt-7 rounded-xl border border-white/8 bg-void-1 p-5 font-mono text-xs leading-relaxed text-fog/70">
+            <Reveal delay={160} className="mt-7 rounded-xl border border-ink/8 bg-void-1 p-5 font-mono text-xs leading-relaxed text-fog/70">
               (Component × .35) + (Token × .30) +<br />
               (Naming × .20) + (Spacing × .15)<br />
               <span className="text-accent-primary">→ lenient curve → 0–100 + grade</span>
@@ -98,7 +98,7 @@ export default function UnderTheHood() {
             {GRADES.map((g) => (
               <div
                 key={g.grade}
-                className="flex items-center gap-5 rounded-xl border border-white/8 bg-void-1 p-4"
+                className="flex items-center gap-5 rounded-xl border border-ink/8 bg-void-1 p-4"
               >
                 <span
                   className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg font-display text-xl"
@@ -108,7 +108,7 @@ export default function UnderTheHood() {
                 </span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-pearl">{g.label}</div>
-                  <div className="font-mono text-xs text-fog/55">{g.range}</div>
+                  <div className="font-mono text-xs text-fog/65">{g.range}</div>
                 </div>
                 <div
                   className="h-1.5 w-16 rounded-full"
