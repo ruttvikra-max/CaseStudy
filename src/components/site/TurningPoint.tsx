@@ -52,7 +52,7 @@ export default function TurningPoint() {
         {/* Decision 1 — form factor */}
         <div className="mt-20 grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <Reveal className="font-mono text-sm text-accent-primary/80">
+            <Reveal className="font-mono text-base text-accent-primary/80">
               Decision 01
             </Reveal>
             <Reveal
@@ -62,7 +62,7 @@ export default function TurningPoint() {
             >
               A plugin — not a separate app.
             </Reveal>
-            <Reveal delay={120} className="mt-5 max-w-xl space-y-4 text-fog/80 lg:max-w-none">
+            <Reveal delay={120} className="mt-5 max-w-[62ch] space-y-4 text-fog/80">
               <p>
                 The instinct is to build governance as its own product — a web
                 dashboard you upload files to. I ruled it out for two reasons.
@@ -94,15 +94,15 @@ export default function TurningPoint() {
               >
                 <div>
                   <div
-                    className={`text-base ${
+                    className={`text-lg ${
                       o.chosen ? "font-medium text-accent-primary" : "text-pearl/85"
                     }`}
                   >
                     {o.name}
                   </div>
-                  <div className="mt-1 text-sm text-fog/65">{o.verdict}</div>
+                  <div className="mt-1 text-base text-fog/65">{o.verdict}</div>
                 </div>
-                <span className="shrink-0 font-mono text-xs uppercase tracking-wider">
+                <span className="shrink-0 font-mono text-sm uppercase tracking-wider">
                   {o.chosen ? (
                     <span className="text-accent-primary">✓ Chosen</span>
                   ) : (
@@ -116,7 +116,7 @@ export default function TurningPoint() {
 
         {/* Decision 2 — deterministic */}
         <div className="mt-28">
-          <Reveal className="font-mono text-sm text-accent-primary/80">
+          <Reveal className="font-mono text-base text-accent-primary/80">
             Decision 02
           </Reveal>
           <Reveal
@@ -137,7 +137,7 @@ export default function TurningPoint() {
             score.&rdquo;
           </Reveal>
 
-          <Reveal delay={160} className="mt-6 max-w-2xl text-fog/80 lg:max-w-3xl">
+          <Reveal delay={160} className="mt-6 max-w-[62ch] text-fog/80">
             Every design tool today reaches for an LLM. But a governance
             metric that changes without the file changing isn&rsquo;t a metric —
             it&rsquo;s a guess. So the measurement core stays deterministic.

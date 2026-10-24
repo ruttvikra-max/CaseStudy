@@ -38,7 +38,7 @@ export default function SectionHeader({
         <Reveal
           as="p"
           delay={150}
-          className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-fog lg:max-w-3xl"
+          className="mt-6 max-w-[62ch] text-pretty text-lg leading-relaxed text-fog"
         >
           {lead}
         </Reveal>

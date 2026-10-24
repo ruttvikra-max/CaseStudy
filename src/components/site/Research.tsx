@@ -65,10 +65,10 @@ export default function Research() {
               <div className="font-display text-[clamp(36px,4vw,52px)] font-normal leading-none text-pearl">
                 {f.stat}
               </div>
-              <h3 className="mt-4 font-sans text-base font-medium text-accent-primary/90">
+              <h3 className="mt-4 font-sans text-lg font-medium text-accent-primary/90">
                 {f.head}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-fog/75">{f.body}</p>
+              <p className="mt-2 text-base leading-relaxed text-fog/75">{f.body}</p>
             </Reveal>
           ))}
         </div>
@@ -84,7 +84,7 @@ export default function Research() {
             >
               88.9% saw drift cause &gt;10% of dev rework.
             </Reveal>
-            <Reveal delay={130} className="mt-5 max-w-xl text-fog/75 lg:max-w-none">
+            <Reveal delay={130} className="mt-5 max-w-[62ch] text-fog/75">
               Design drift isn&rsquo;t absorbed by designers — it leaks
               downstream into engineering time. Nearly half of teams lose
               11–25% of development to fixing inconsistencies.
@@ -96,7 +96,7 @@ export default function Research() {
             {REWORK.map((r, i) => (
               <Reveal key={r.range} delay={i * 80} className="">
                 <div className="mb-1.5 flex items-baseline justify-between">
-                  <span className="font-mono text-xs uppercase tracking-wider text-fog/70">
+                  <span className="font-mono text-sm uppercase tracking-wider text-fog/70">
                     {r.range} of dev time
                   </span>
                   <span className="font-display text-lg text-pearl">{r.pct}%</span>
