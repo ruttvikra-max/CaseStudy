@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compact 3 — Fixed Stepper</title>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--surface-2:#efede7;--text:#0b0d12;--fog:#2a303c;--line:rgba(11,13,18,.14);--accent:#b45309;--accent-soft:rgba(180,83,9,.10);--no:#8a2a2a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 16px 40px}
+@media (min-width:768px){.wrap{padding:32px 40px 56px}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.kicker{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin:0}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.toggle{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-size:clamp(22px,2.6vw,34px);line-height:1.18;font-weight:500;letter-spacing:-.01em;margin:8px 0 0;max-width:36ch}
+.lead{margin:10px 0 0;max-width:62ch;color:var(--fog)}
+.lead b,.diagram b{color:var(--text);font-weight:600}
+.diagram{margin-top:22px}
+.mono,.tech,.msg{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tech{font-size:12px;letter-spacing:.03em;color:var(--accent);line-height:1.4}
+.msg{display:inline-block;font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px dashed var(--accent);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ph{font-size:12px;color:var(--fog);border:1px dotted var(--fog);border-radius:4px;padding:0 5px;white-space:nowrap}
+.foot{margin:12px 0 0;font-size:16px;color:var(--fog);max-width:62ch}
+.foot small{font-size:12px;display:block;margin-top:2px}
+.cap{margin:28px 0 0;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fog)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.lanes{display:grid;grid-template-columns:1fr 2px 1fr;gap:8px;align-items:center;font-size:13px;color:var(--fog);margin-bottom:10px}
+.lanes b{font-weight:600}
+.lanes .w{align-self:stretch;border-left:2px dashed var(--fog);opacity:.5}
+.lanes>span:last-child{text-align:left}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tab{position:relative;min-height:56px;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:8px 10px 8px 42px;display:flex;flex-direction:column;justify-content:center}
+.tab .n{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:600 13px ui-monospace,Menlo,monospace;border:1.5px solid var(--accent);color:var(--accent)}
+.tab .lbl{font-weight:600;line-height:1.25}
+.tab .whom{font-size:12px;color:var(--fog);font-family:ui-monospace,Menlo,monospace}
+.tab.cross::after{content:"\21C4";position:absolute;right:8px;top:6px;font-size:13px;color:var(--accent)}
+.tab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.tab[aria-selected="true"] .n{background:var(--accent);color:var(--bg)}
+.stage{margin-top:10px;display:grid;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.stage>[role=tabpanel]{grid-area:1/1;padding:14px 16px 12px;transition:opacity .2s}
+.stage>[hidden]{display:block;visibility:hidden;opacity:0}
+.stage p{margin:0}
+.stage .tech{margin-top:6px}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.nav button{min-height:44px;min-width:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px}
+.nav .pos{font:12px ui-monospace,Menlo,monospace;color:var(--fog)}
+@media (min-width:860px){.tabs{grid-template-columns:repeat(4,1fr)}.lanes{font-size:16px}.stage>[role=tabpanel]{padding:18px 22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span class="kicker">Compact concept 3 &middot; Fixed stepper</span><button class="toggle" id="theme" type="button">Theme</button></div>
+<section id="block" aria-labelledby="h">
+<p class="kicker">The architecture constraint</p>
+<h2 id="h">The part that reads your file can&rsquo;t draw. The part that draws can&rsquo;t read.</h2>
+<p class="lead">Figma splits every plugin in two. Your file stays with one half; <b>one message</b> crosses back.</p>
+<div class="diagram">
+<div class="lanes" aria-hidden="true"><span style="text-align:right"><b>Panel</b>: draws, can&rsquo;t read</span><span class="w"></span><span><b>Engine</b>: reads, can&rsquo;t draw</span></div>
+<div class="tabs" role="tablist" aria-label="One analysis in four stages"><button type="button" role="tab" class="tab" id="t0" aria-controls="p0" aria-selected="true" tabindex="0"><span class="n">1</span><span class="lbl">Press Run</span><span class="whom">You &rarr; panel</span></button><button type="button" role="tab" class="tab cross" id="t1" aria-controls="p1" aria-selected="false" tabindex="-1"><span class="n">2</span><span class="lbl">Panel asks</span><span class="whom">Panel &rarr; engine</span></button><button type="button" role="tab" class="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1"><span class="n">3</span><span class="lbl">Read &amp; score</span><span class="whom">Engine</span></button><button type="button" role="tab" class="tab cross" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><span class="n">4</span><span class="lbl">Findings back</span><span class="whom"><span class=msg style="font-size:12px;padding:0 6px">ANALYSIS_COMPLETE</span></span></button></div>
+<div class="stage"><div role="tabpanel" id="p0" aria-labelledby="t0"><p>You press <b>Run analysis</b> in the plugin panel.</p><p class="tech">UI iframe &middot; React</p></div><div role="tabpanel" id="p1" aria-labelledby="t1" hidden><p>The panel can&rsquo;t read the file, so it asks the engine to.</p><p class="tech">postMessage &middot; run request <span class="ph">placeholder name</span></p></div><div role="tabpanel" id="p2" aria-labelledby="t2" hidden><p>Walks every frame, instance and token, checks the four pillars and computes the drift score. <b>Same file, same score.</b></p><p class="tech">figma.* scene API &middot; deterministic, offline*</p></div><div role="tabpanel" id="p3" aria-labelledby="t3" hidden><p>Sends back <b>the findings, never the file.</b> The panel draws the score, the pillars and each issue.</p><p class="tech">ANALYSIS_COMPLETE &middot; React renders from the message alone</p></div></div>
+<p class="foot" style="margin-top:2px"><small>&#8644; = crosses the wall. *&ldquo;No internet&rdquo; assumes the manifest&rsquo;s <span class="mono">allowedDomains</span> blocks the network; not yet verified.</small></p>
+</div>
+</section>
+<p class="cap">block height (kicker &rarr; diagram): <b>410px</b> desktop 1440&times;900 / <b>540px</b> mobile 375&times;812 &middot; headless Chrome &middot; budget 640 / 560 &middot; this window: <span id="live">&ndash;</span></p>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('theme');
+function cur(){return r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function lab(){b.textContent=cur()==='dark'?'Light theme':'Dark theme'}
+b.onclick=function(){r.dataset.theme=cur()==='dark'?'light':'dark';lab()};lab();
+function m(){var h=Math.round(document.getElementById('block').getBoundingClientRect().height);
+document.getElementById('live').textContent=h+'px at '+innerWidth+'px wide';
+var d=document.body.dataset;d.h=h;d.sw=document.documentElement.scrollWidth;d.w=innerWidth}
+addEventListener('resize',m);addEventListener('load',m);m()})();
+
+(function(){var T=[].slice.call(document.querySelectorAll('[role=tab]')),i=0;
+function go(n,f){i=(n+T.length)%T.length;T.forEach(function(t,k){var on=k===i;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;
+document.getElementById('p'+k).hidden=!on});if(f)T[i].focus()}
+T.forEach(function(t,k){t.onclick=function(){go(k)};t.onkeydown=function(e){
+var d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(d){e.preventDefault();go(i+d,1)}
+if(e.key==='Home'){e.preventDefault();go(0,1)}if(e.key==='End'){e.preventDefault();go(T.length-1,1)}}});})();
+</script>
+</body>
+</html>

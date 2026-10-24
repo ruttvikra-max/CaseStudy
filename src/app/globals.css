@@ -316,6 +316,39 @@
 }
 .drift-mobile-pulse { animation: driftPulseDown 5.5s linear infinite; }
 
+
+/* ── architecture Venn (plain divs so text keeps real px sizes) ── */
+.venn{position:relative;margin:0 auto;width:330px;height:338px;--d:210px;max-width:100%}
+.venn-set{position:absolute;width:var(--d);height:var(--d);border-radius:50%;border:1.5px solid var(--color-fog)}
+.venn-eng{background:color-mix(in oklab,var(--color-accent-primary) 14%,transparent);border-color:var(--color-accent-primary);left:60px;top:0}
+.venn-pan{background:color-mix(in oklab,var(--color-fog) 9%,transparent);left:60px;top:120px}
+.venn-t{position:absolute;text-align:center;line-height:1.3}
+.venn-n{display:block;font-weight:600;font-size:17px;color:var(--color-pearl)}
+.venn-s{display:block;color:var(--color-fog);font-size:15px}
+.venn-k{display:block;font-family:var(--font-mono);font-size:12px;color:var(--color-accent-primary)}
+.venn-e{left:60px;width:210px;top:22px}
+.venn-p{left:60px;width:210px;top:222px}
+.venn-m{left:60px;width:210px;top:140px}
+.venn-msg{display:inline-block;font-family:var(--font-mono);font-weight:600;font-size:12.5px;line-height:1.2;color:var(--color-accent-primary);border:1px dashed var(--color-accent-primary);border-radius:999px;padding:3px 8px;background:var(--color-void-1);animation:vennGlow 2.6s ease-in-out infinite}
+.venn-s2{font-size:13px;margin-top:3px}
+.venn-uni{position:absolute;left:0;top:0;font-family:var(--font-mono);font-size:12px;line-height:1;letter-spacing:.14em;color:var(--color-fog)}
+.venn-side{position:absolute;font-size:12px;color:var(--color-fog);line-height:1.35;left:0;top:150px;width:58px;text-align:right}
+.venn-side::after{content:"";position:absolute;right:-26px;top:9px;width:22px;border-top:1px solid var(--color-fog)}
+@keyframes vennGlow{0%,100%{box-shadow:0 0 0 0 color-mix(in oklab,var(--color-accent-primary) 14%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in oklab,var(--color-accent-primary) 14%,transparent)}}
+@media (max-width:359px){.venn{zoom:.84}}
+@media (min-width:640px){
+ .venn{width:600px;height:336px;--d:330px}
+ .venn-eng{left:45px;top:3px}.venn-pan{left:225px;top:3px}
+ .venn-e{left:55px;width:160px;top:112px}
+ .venn-p{left:385px;width:160px;top:112px}
+ .venn-m{left:225px;width:150px;top:146px}
+ .venn-n{font-size:20px}.venn-s{font-size:16px}
+ .venn-side{left:226px;top:-2px;width:148px;text-align:center}
+ .venn-side::after{left:50%;right:auto;top:18px;width:0;height:24px;border-top:0;border-left:1px solid var(--color-fog)}
+ .venn-uni{top:auto;bottom:0;left:30px}
+}
+@media (prefers-reduced-motion:reduce){.venn-msg{animation:none}}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   .kinetic-line, .scroll-cue-dot { animation: none !important; }

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compact 4 — Floor Plan</title>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--surface-2:#efede7;--text:#0b0d12;--fog:#2a303c;--line:rgba(11,13,18,.14);--accent:#b45309;--accent-soft:rgba(180,83,9,.10);--no:#8a2a2a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.13);--no:#ff8f8f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 16px 40px}
+@media (min-width:768px){.wrap{padding:32px 40px 56px}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.kicker{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin:0}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.toggle{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-size:clamp(22px,2.6vw,34px);line-height:1.18;font-weight:500;letter-spacing:-.01em;margin:8px 0 0;max-width:36ch}
+.lead{margin:10px 0 0;max-width:62ch;color:var(--fog)}
+.lead b,.diagram b{color:var(--text);font-weight:600}
+.diagram{margin-top:22px}
+.mono,.tech,.msg{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tech{font-size:12px;letter-spacing:.03em;color:var(--accent);line-height:1.4}
+.msg{display:inline-block;font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px dashed var(--accent);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ph{font-size:12px;color:var(--fog);border:1px dotted var(--fog);border-radius:4px;padding:0 5px;white-space:nowrap}
+.foot{margin:12px 0 0;font-size:16px;color:var(--fog);max-width:62ch}
+.foot small{font-size:12px;display:block;margin-top:2px}
+.cap{margin:28px 0 0;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fog)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.plan{display:grid;gap:12px;grid-template-columns:1fr}
+.plan svg{width:100%;height:auto;display:block;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.plan svg text{font-family:system-ui,-apple-system,sans-serif;fill:var(--text)}
+.plan .k{fill:var(--surface);stroke:var(--accent);stroke-width:2.5}
+.plan .kn{fill:var(--accent);font-weight:700;font-size:22px}
+.plan [data-k]{cursor:pointer}
+.key{list-style:none;margin:0;padding:0;display:grid;gap:2px;grid-template-columns:1fr}
+.key li{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;border-radius:10px;padding:3px 6px;min-height:32px;transition:background .15s}
+.key .n{width:24px;height:24px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font:700 13px ui-monospace,Menlo,monospace;margin-top:1px}
+.key p{margin:0;color:var(--fog);line-height:1.4}
+.key .tech{margin-left:2px}
+@media (max-width:859px){.key .tech{display:none}}
+.key button{all:unset;display:contents}
+.plan[data-on="1"] [data-k="1"],.plan[data-on="2"] [data-k="2"],.plan[data-on="3"] [data-k="3"],.plan[data-on="4"] [data-k="4"]{background:var(--accent-soft)}
+.plan[data-on="1"] g[data-k="1"] .k,.plan[data-on="2"] g[data-k="2"] .k,.plan[data-on="3"] g[data-k="3"] .k,.plan[data-on="4"] g[data-k="4"] .k{fill:var(--accent)}
+.plan[data-on="1"] g[data-k="1"] .kn,.plan[data-on="2"] g[data-k="2"] .kn,.plan[data-on="3"] g[data-k="3"] .kn,.plan[data-on="4"] g[data-k="4"] .kn{fill:var(--surface)}
+.env{animation:float 2.6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateX(0)}50%{transform:translateX(-14px)}}
+@media (min-width:860px){.plan{grid-template-columns:1.25fr 1fr;align-items:center;gap:28px}.key{gap:10px}.key li{padding:8px 10px}}
+.key li{position:relative}.key .kb{all:unset;position:absolute;inset:0;border-radius:10px;cursor:pointer}.key .kb:focus-visible{outline:2px solid var(--accent)}</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span class="kicker">Compact concept 4 &middot; Floor plan</span><button class="toggle" id="theme" type="button">Theme</button></div>
+<section id="block" aria-labelledby="h">
+<p class="kicker">The architecture constraint</p>
+<h2 id="h">The part that reads your file can&rsquo;t draw. The part that draws can&rsquo;t read.</h2>
+<p class="lead">Figma splits every plugin in two. Your file stays with one half; <b>one message</b> crosses back.</p>
+<div class="diagram">
+<div class="plan" id="plan">
+
+<svg viewBox="0 0 640 300" role="img" aria-labelledby="svgt">
+<title id="svgt">Floor plan: Figma holds two rooms, the panel and the engine, split by a wall with one slot. Only the findings envelope passes through the slot.</title>
+<defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="var(--surface-2)"/><line x1="0" y1="0" x2="0" y2="8" stroke="var(--fog)" stroke-width="2" opacity=".45"/></pattern>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker></defs>
+<text x="22" y="34" font-size="20" font-weight="600" fill="var(--fog)" style="fill:var(--fog);letter-spacing:.12em">FIGMA</text>
+<rect x="14" y="46" width="612" height="240" rx="14" fill="none" stroke="var(--line)" stroke-width="2"/>
+<text x="40" y="84" font-size="24" font-weight="600">The panel</text>
+<text x="368" y="84" font-size="24" font-weight="600">The engine</text>
+<!-- panel: screen with score bars -->
+<rect x="44" y="110" width="200" height="130" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+<circle cx="90" cy="160" r="24" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="110 151" transform="rotate(-90 90 160)"/>
+<rect x="132" y="140" width="90" height="10" rx="5" fill="var(--fog)" opacity=".35"/><rect x="132" y="160" width="64" height="10" rx="5" fill="var(--fog)" opacity=".35"/><rect x="132" y="180" width="78" height="10" rx="5" fill="var(--fog)" opacity=".35"/>
+<rect x="64" y="206" width="160" height="14" rx="7" fill="var(--accent)" opacity=".3"/>
+<!-- wall with slot -->
+<rect x="306" y="46" width="28" height="104" fill="url(#hatch)"/><rect x="306" y="196" width="28" height="90" fill="url(#hatch)"/>
+<!-- engine: file layers -->
+<g fill="var(--surface-2)" stroke="var(--accent)" stroke-width="2"><path d="M398 216l90-26 90 26-90 26z"/><path d="M398 190l90-26 90 26-90 26z"/><path d="M398 164l90-26 90 26-90 26z"/></g>
+<path d="M392 173 C 360 173 360 173 346 173" stroke="var(--accent)" stroke-width="2.5" fill="none" stroke-dasharray="5 5"/>
+<path d="M296 173 L 256 173" stroke="var(--accent)" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>
+<g class="env"><rect x="300" y="160" width="40" height="27" rx="4" fill="var(--accent)"/><path d="M300 162l20 13 20-13" fill="none" stroke="var(--surface)" stroke-width="2"/></g>
+<!-- callouts -->
+<g data-k="1" tabindex="-1"><circle class="k" cx="250" cy="108" r="17"/><text class="kn" x="250" y="116" text-anchor="middle">1</text></g>
+<g data-k="2"><circle class="k" cx="594" cy="140" r="17"/><text class="kn" x="594" y="148" text-anchor="middle">2</text></g>
+<g data-k="3"><circle class="k" cx="320" cy="86" r="17"/><text class="kn" x="320" y="94" text-anchor="middle">3</text></g>
+<g data-k="4"><circle class="k" cx="320" cy="232" r="17"/><text class="kn" x="320" y="240" text-anchor="middle">4</text></g>
+</svg>
+<ol class="key"><li data-k="1"><button type="button" class="kb" aria-label="Highlight Panel" data-k="1"></button><span class="n" aria-hidden="true">1</span><p><b>Panel</b>: draws, <b>can&rsquo;t see the file</b> <span class=tech>UI iframe</span></p></li><li data-k="2"><button type="button" class="kb" aria-label="Highlight Engine" data-k="2"></button><span class="n" aria-hidden="true">2</span><p><b>Engine</b>: reads, <b>can&rsquo;t draw</b>, offline* <span class=tech>code.ts</span></p></li><li data-k="3"><button type="button" class="kb" aria-label="Highlight Wall" data-k="3"></button><span class="n" aria-hidden="true">3</span><p><b>Wall</b>: neither half does the whole job</p></li><li data-k="4"><button type="button" class="kb" aria-label="Highlight Slot" data-k="4"></button><span class="n" aria-hidden="true">4</span><p><b>Slot</b>: <span class="msg" style="font-size:12px;padding:0 6px">ANALYSIS_COMPLETE</span> <b>findings only</b></p></li></ol>
+</div>
+<p class="foot" style="margin-top:6px"><small>*&ldquo;Offline&rdquo; assumes the manifest&rsquo;s <span class="mono">allowedDomains</span> blocks the network; not yet verified. Tap a number to light it up.</small></p>
+</div>
+</section>
+<p class="cap">block height (kicker &rarr; diagram): <b>492px</b> desktop 1440&times;900 / <b>533px</b> mobile 375&times;812 &middot; headless Chrome &middot; budget 640 / 560 &middot; this window: <span id="live">&ndash;</span></p>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('theme');
+function cur(){return r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function lab(){b.textContent=cur()==='dark'?'Light theme':'Dark theme'}
+b.onclick=function(){r.dataset.theme=cur()==='dark'?'light':'dark';lab()};lab();
+function m(){var h=Math.round(document.getElementById('block').getBoundingClientRect().height);
+document.getElementById('live').textContent=h+'px at '+innerWidth+'px wide';
+var d=document.body.dataset;d.h=h;d.sw=document.documentElement.scrollWidth;d.w=innerWidth}
+addEventListener('resize',m);addEventListener('load',m);m()})();
+
+(function(){var p=document.getElementById('plan');
+p.addEventListener('click',function(e){var k=e.target.closest('[data-k]');if(!k)return;var n=k.dataset.k;p.dataset.on=p.dataset.on===n?'':n});
+p.addEventListener('mouseover',function(e){var k=e.target.closest('[data-k]');if(k)p.dataset.on=k.dataset.k});})();
+</script>
+</body>
+</html>

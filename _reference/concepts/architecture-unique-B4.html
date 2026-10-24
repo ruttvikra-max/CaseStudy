@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 — The Equation</title>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--text:#0b0d12;--fog:#2a303c;--line:rgba(11,13,18,.16);--accent:#b45309;--a1:rgba(180,83,9,.12);--no:#9b2c2c;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06070a;--surface:#11141b;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.16);--accent:#ff8a1e;--a1:rgba(255,138,30,.14);--no:#ff8f8f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#06070a;--surface:#11141b;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.16);--accent:#ff8a1e;--a1:rgba(255,138,30,.14);--no:#ff8f8f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 16px 40px}
+@media (min-width:768px){.wrap{padding:32px 40px 56px}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
+.kicker{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin:0}
+.toggle{font:inherit;font-size:14px;color:inherit;cursor:pointer;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-size:clamp(22px,2.6vw,34px);line-height:1.18;font-weight:500;letter-spacing:-.01em;margin:8px 0 0;max-width:30ch}
+b{color:var(--text);font-weight:600}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.cap{margin:28px 0 0;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fog)}
+.foot{margin:14px 0 0;font-size:12px;color:var(--fog);max-width:70ch}
+
+.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+/* line 1: the equation Figma forbids */
+.wrong{margin:18px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font-size:19px;color:var(--fog)}
+.wrong .t{font-style:italic}
+.wrong .neq{font-size:26px;color:var(--no);line-height:1}
+.stamp{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--no);border:1.5px solid var(--no);border-radius:4px;padding:4px 6px;transform:rotate(-3deg);display:inline-block}
+/* line 2: the real one, terms annotated underneath */
+.eq{margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:baseline}
+.op{font-size:24px;color:var(--fog);text-align:center;min-width:22px}
+.term{font-size:26px;line-height:1.1}
+.term.e{text-decoration:underline 3px var(--accent);text-underline-offset:6px}
+.term.p{text-decoration:underline 2px dotted var(--fog);text-underline-offset:6px}
+.pill{font:600 15px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);border:1.5px dashed var(--accent);background:var(--a1);border-radius:999px;padding:3px 9px;white-space:nowrap;display:inline-block}
+.note{display:block;font-size:16px;color:var(--fog);line-height:1.35;margin-top:2px}
+.note .k{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);margin-left:4px;white-space:nowrap}
+.cell{min-width:0}
+.res{font-size:24px;grid-column:1/-1;line-height:1.25}
+.opi{color:var(--fog);margin-right:4px}
+.res .note{display:none;font-size:16px;margin-left:6px}
+.pill{animation:glow 2.6s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 var(--a1)}50%{box-shadow:0 0 0 7px var(--a1)}}
+
+@media (min-width:900px){
+ .wrong{font-size:22px}.wrong .neq{font-size:30px}
+ .eq{grid-template-columns:1fr auto 1fr auto 1.25fr;grid-template-rows:auto auto;gap:6px 16px;padding-top:22px;margin-top:20px}
+ .eq .op{grid-row:1;font-size:36px}
+ .term{font-size:40px}.pill{font-size:17px;padding:6px 12px}
+ .eq .op.first{display:none}
+ .cell{grid-row:1/3;display:grid;grid-template-rows:subgrid;align-items:end}
+ .cell .note{align-self:start;margin-top:8px}
+ .res{font-size:28px;margin-top:12px}
+ .res .note{display:inline}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span class="kicker">Concept B4 &middot; The equation</span><button class="toggle" id="theme" type="button">Theme</button></div>
+<section id="block" aria-labelledby="h">
+ <p class="kicker">The architecture constraint</p>
+ <h2 id="h">Figma&rsquo;s plugin rules force a different equation.</h2>
+
+ <p class="wrong serif" aria-label="Not allowed: reads your file plus draws the screen equals one program.">
+  <span class="t">reads your file</span><span>+</span><span class="t">draws the screen</span><span class="neq" aria-hidden="true">&ne;</span><span class="t">one program</span><span class="stamp">not allowed</span>
+ </p>
+
+ <div class="eq serif" role="group" aria-label="Instead: the engine plus the panel, joined by one message, makes the plugin.">
+  <span class="op first" aria-hidden="true"></span>
+  <div class="cell"><span class="term e">Engine</span><span class="note">reads every layer, no screen, offline* <span class="k">code.ts</span></span></div>
+  <span class="op" aria-hidden="true">+</span>
+  <div class="cell"><span class="term p">Panel</span><span class="note">draws the score, can&rsquo;t see the file <span class="k">UI iframe</span></span></div>
+  <span class="op" aria-hidden="true">+</span>
+  <div class="cell"><span><span class="pill">1 &times; ANALYSIS_COMPLETE</span></span><span class="note">the one message between them: findings, never the file</span></div>
+  <div class="res"><span class="opi" aria-hidden="true">=</span> <span>a private, repeatable score.</span><span class="note">Your file stays put; same file, same score.</span></div>
+ </div>
+ <p class="foot">*&ldquo;Offline&rdquo; assumes the manifest&rsquo;s <span class="mono">allowedDomains</span> blocks the network; not yet verified.</p>
+</section>
+<p class="cap">block height: <b>396px</b> desktop 1440&times;900 / <b>514px</b> mobile 375&times;812 &middot; headless Chrome &middot; budget 640 / 560 &middot; this window: <span id="live">&ndash;</span></p>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('theme');
+function cur(){return r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function lab(){b.textContent=cur()==='dark'?'Light theme':'Dark theme'}
+b.onclick=function(){r.dataset.theme=cur()==='dark'?'light':'dark';lab()};lab();
+function m(){var h=Math.round(document.getElementById('block').getBoundingClientRect().height);
+document.getElementById('live').textContent=h+'px at '+innerWidth+'px wide';
+var d=document.body.dataset;d.h=h;d.sw=document.documentElement.scrollWidth;d.w=innerWidth}
+addEventListener('resize',m);addEventListener('load',m);m()})();
+</script>
+</body>
+</html>

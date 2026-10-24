@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Blind Spots</title>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--surface-2:#efede7;--text:#0b0d12;--fog:#2a303c;--line:rgba(11,13,18,.14);--accent:#b45309;--accent-soft:rgba(180,83,9,.12);--no:#a12a2a;--hatch:rgba(11,13,18,.06);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.14);--no:#ff8f8f;--hatch:rgba(255,255,255,.05);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#06070a;--surface:#11141b;--surface-2:#191d26;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.12);--accent:#ff8a1e;--accent-soft:rgba(255,138,30,.14);--no:#ff8f8f;--hatch:rgba(255,255,255,.05);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 16px 40px}
+@media (min-width:768px){.wrap{padding:32px 40px 56px}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}
+.kicker,.cap,.mono,code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin:0}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pill{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-size:clamp(24px,2.8vw,36px);line-height:1.15;font-weight:500;letter-spacing:-.01em;margin:8px 0 0}
+.lead{margin:8px 0 0;max-width:70ch;color:var(--fog)}
+.lead b{color:var(--text);font-weight:600}
+.cap{margin:28px 0 0;font-size:12px;line-height:1.5;color:var(--fog)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* split view */
+.cmp{--x:50%;position:relative;height:310px;margin-top:18px;border-radius:18px;border:1px solid var(--line);overflow:hidden;user-select:none}
+.layer{position:absolute;inset:0;padding:44px 22px 64px}
+/* panel's view (base): pixels, but the file is a blank */
+.pv{background:var(--surface);display:flex;justify-content:flex-end;gap:20px}
+.blind{position:absolute;inset:44px 50% 64px 22px;border-radius:12px;border:1.5px dashed var(--line);background:repeating-linear-gradient(135deg,var(--hatch) 0 8px,transparent 8px 16px);display:grid;place-items:center;text-align:center;color:var(--fog);font-size:14px;padding:12px}
+.dash{width:min(44%,400px);display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-content:start}
+.ring{width:104px;height:104px;border-radius:50%;background:conic-gradient(var(--accent) 0 82%,var(--line) 0);display:grid;place-items:center;grid-row:span 2}
+.ring b{width:80px;height:80px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:30px;font-weight:700;line-height:1}
+.dash h3{margin:6px 0 0;font-size:18px;font-weight:600;line-height:1.2}
+.dash p{margin:0;color:var(--fog);font-size:14px}
+.bars{grid-column:1/-1;display:grid;gap:7px;margin-top:8px}
+.bars i{display:block;height:10px;border-radius:5px;background:var(--line)}
+.bars i::before{content:"";display:block;height:100%;width:var(--w);border-radius:5px;background:var(--accent)}
+/* engine's view (clipped to the left of the handle): data, no pixels */
+.ev{background:var(--surface-2);clip-path:inset(0 calc(100% - var(--x)) 0 0)}
+.tree{margin:0;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--text);white-space:pre}
+.tree .k{color:var(--fog)}.tree .bad{color:var(--no)}.tree .t{color:var(--accent)}
+.noscreen{position:absolute;inset:44px 22px 64px 50%;border-radius:12px;border:1.5px dashed var(--line);display:grid;place-items:center;text-align:center;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fog);padding:12px}
+/* corner labels (always visible) */
+.tag{position:absolute;top:12px;z-index:2;font:600 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--line)}
+.tag.l{left:12px}.tag.r{right:12px}
+.tag span{font-weight:400;text-transform:none;letter-spacing:0;color:var(--fog)}
+/* handle */
+.hd{position:absolute;top:0;bottom:0;left:var(--x);width:0;z-index:3;pointer-events:none}
+.hd::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:var(--accent)}
+.knob{--kb:40px;position:absolute;bottom:12px;left:0;transform:translateX(calc(var(--kb)/-2));display:grid;grid-auto-flow:column;align-items:center;gap:6px}
+.flip .knob{direction:rtl;transform:translateX(calc(-100% + var(--kb)/2))}
+.knob b{width:var(--kb);height:var(--kb);border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-size:18px;box-shadow:0 0 0 4px var(--accent-soft)}
+.knob code{font-size:12px;font-weight:700;color:var(--accent);background:var(--bg);border:1px solid var(--accent);border-radius:999px;padding:3px 8px;white-space:nowrap}
+.cmp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;z-index:4}
+.cmp:has(input:focus-visible) .knob b{outline:2px solid var(--text);outline-offset:3px}
+.foot{margin:10px 0 0;color:var(--fog);max-width:80ch}
+.foot b{color:var(--text);font-weight:600}
+.foot small{display:block;font-size:12px;margin-top:2px}
+.foot .mb{display:none}
+@media (max-width:767px){.foot .mb{display:inline}}
+@media (max-width:767px){
+  h2{font-size:24px}
+  .cmp{margin-top:12px;border-radius:14px}
+  .layer{padding:40px 12px 12px}
+  .blind{inset:40px 50% 50px 12px;font-size:13px}
+  .noscreen{inset:40px 12px 50px 50%;font-size:12px}
+  .tree{font-size:12px;line-height:1.6}
+  .dash{width:46%;grid-template-columns:1fr;justify-items:start;gap:2px}
+  .ring{width:68px;height:68px;grid-row:auto}
+  .ring b{width:52px;height:52px;font-size:20px}
+  .dash h3{font-size:15px;margin:2px 0 0}
+  .dash p{font-size:12px}
+  .bars{width:100%;gap:5px;margin-top:4px}
+  .bars i{height:8px}
+  .tag{top:8px;font-size:12px;padding:4px 6px}.tag.l{left:8px}.tag.r{right:8px}
+  .tag span{display:none}
+  .cmp{height:270px}
+  .knob{bottom:8px}
+  .knob{--kb:32px}
+  .knob b{font-size:16px}
+  .foot .dt{display:none}
+  .foot{margin-top:8px}
+  .lead .dt{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><span class="kicker">Unique A4 · Two blind spots</span><button class="pill" id="theme" type="button">Theme</button></div>
+
+  <section id="block" aria-labelledby="h">
+    <p class="kicker">The architecture constraint</p>
+    <h2 id="h">Same plugin, two blind spots. Drag the line.</h2>
+    <p class="lead">Figma splits every plugin in two. The <b>engine</b> sees your file as data but has no screen. The <b>panel</b> can draw<span class="dt"> anything</span> but never sees the file.</p>
+
+    <div class="cmp" id="cmp">
+      <span class="tag l">Engine sees <span>&middot; reads, can&rsquo;t draw</span></span>
+      <span class="tag r">Panel sees <span>&middot; draws, can&rsquo;t read</span></span>
+
+      <div class="layer pv" aria-hidden="true">
+        <div class="blind">Your file?<br>Not visible to the panel.</div>
+        <div class="dash">
+          <div class="ring"><b>82</b></div>
+          <h3>Drift score</h3>
+          <p>14 issues found</p>
+          <div class="bars"><i style="--w:90%"></i><i style="--w:72%"></i><i style="--w:84%"></i><i style="--w:61%"></i></div>
+        </div>
+      </div>
+
+      <div class="layer ev" aria-hidden="true">
+<pre class="tree"><span class="t">FRAME</span> Checkout
+ <span class="t">TEXT</span> "Pay now"
+ <span class="t">INSTANCE</span> Button
+  <span class="k">fill</span> #3B82F6 <span class="bad">&#10005; token</span>
+ <span class="t">RECT</span> <span class="k">radius</span> 7 <span class="bad">&#10005;</span>
+ <span class="k">+ 1,204 more layers</span></pre>
+        <div class="noscreen">[ no screen ]<br>nothing here can be drawn</div>
+      </div>
+
+      <div class="hd" aria-hidden="true"><div class="knob"><b>&#8644;</b><code>ANALYSIS_COMPLETE</code></div></div>
+      <input type="range" id="x" min="14" max="86" value="50" aria-label="Move the divider between the engine's view and the panel's view">
+    </div>
+
+    <p class="foot"><span class="dt">Only the findings cross the line, as one message, <b>never the file</b>. So scoring stays private, and the same file gets the same score.</span><span class="mb">Only findings cross, <b>never the file</b>: private, repeatable scores.</span>
+      <small>Layer data, score and bars are sample values. The engine likely has no internet either (manifest <code>networkAccess</code>), not yet verified.</small></p>
+  </section>
+
+  <p class="cap">Measured block height (kicker &rarr; footnote), headless Chrome: <b>1440&times;900: 529px</b> &middot; 1024&times;768: 521px &middot; <b>375&times;812: 555px</b> (budget 640 / 560). Fixed height: dragging only moves a clip-path. Live: <span id="live"></span></p>
+</div>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('theme');
+function cur(){return r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function lab(){b.textContent=cur()==='dark'?'Light theme':'Dark theme'}
+b.onclick=function(){r.dataset.theme=cur()==='dark'?'light':'dark';lab()};lab();
+var c=document.getElementById('cmp'),x=document.getElementById('x');
+x.oninput=function(){c.style.setProperty('--x',x.value+'%');c.classList.toggle('flip',x.value>50)};
+function m(){var h=Math.round(document.getElementById('block').getBoundingClientRect().height);
+document.getElementById('live').textContent=h+'px at '+innerWidth+'px wide';
+var d=document.body.dataset;d.h=h;d.sw=document.documentElement.scrollWidth;d.w=innerWidth}
+addEventListener('resize',m);addEventListener('load',m);m()})();
+</script>
+</body>
+</html>

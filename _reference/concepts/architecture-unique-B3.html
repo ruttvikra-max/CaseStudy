@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 — The Hourglass</title>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--text:#0b0d12;--fog:#2a303c;--line:rgba(11,13,18,.16);--accent:#b45309;--a1:rgba(180,83,9,.12);--layer:rgba(42,48,60,.30);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06070a;--surface:#11141b;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.16);--accent:#ff8a1e;--a1:rgba(255,138,30,.14);--layer:rgba(174,182,194,.32);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#06070a;--surface:#11141b;--text:#f5f7ff;--fog:#aeb6c2;--line:rgba(255,255,255,.16);--accent:#ff8a1e;--a1:rgba(255,138,30,.14);--layer:rgba(174,182,194,.32);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 16px 40px}
+@media (min-width:768px){.wrap{padding:32px 40px 56px}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
+.kicker{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin:0}
+.toggle{font:inherit;font-size:14px;color:inherit;cursor:pointer;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-size:clamp(22px,2.6vw,34px);line-height:1.18;font-weight:500;letter-spacing:-.01em;margin:8px 0 0;max-width:22ch}
+.lead{margin:10px 0 0;max-width:44ch;color:var(--fog)}
+b{color:var(--text);font-weight:600}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.cap{margin:28px 0 0;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fog)}
+.foot{margin:12px 0 0;font-size:12px;color:var(--fog);max-width:62ch}
+#block{display:grid;gap:16px}
+@media (min-width:1024px){#block{grid-template-columns:minmax(0,1fr) 540px;gap:48px;align-items:center}}
+
+.glass{position:relative;display:grid;grid-template-columns:160px 1fr;gap:10px;height:300px;margin:0}
+.glass svg{display:block}
+.glass .lbls{position:relative}
+.l{position:absolute;left:0;right:0;line-height:1.35}
+.l .n{display:block;font-weight:600}
+.l .s{display:block;color:var(--fog)}
+.l .k{display:block;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent)}
+.l.top{top:4px}.l.mid{top:136px;transform:translateY(-50%)}.l.bot{bottom:4px}
+.pill{display:inline-block;font:600 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);border:1px dashed var(--accent);background:var(--surface);border-radius:999px;padding:3px 8px;white-space:nowrap}
+.layers rect{fill:var(--layer)}
+.layers rect.hot{fill:var(--accent);opacity:.55}
+.grain{fill:var(--accent);animation:drop 3s ease-in infinite}
+@keyframes drop{0%{transform:translateY(-34px);opacity:0}20%{opacity:1}70%{opacity:1}100%{transform:translateY(46px);opacity:0}}
+@media (min-width:640px){.glass{gap:20px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.grain{opacity:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span class="kicker">Concept B3 &middot; The hourglass</span><button class="toggle" id="theme" type="button">Theme</button></div>
+<section id="block" aria-labelledby="h">
+ <div>
+  <p class="kicker">The architecture constraint</p>
+  <h2 id="h">Your whole file goes in. One message comes out.</h2>
+  <p class="lead">Figma splits every plugin in two, and <b>one message</b> is the only way through. Same file in, same score out.</p>
+  <p class="foot">*&ldquo;Offline&rdquo; assumes the manifest&rsquo;s <span class="mono">allowedDomains</span> blocks the network; not yet verified. The score shown is illustrative.</p>
+ </div>
+ <figure class="glass" aria-label="Hourglass. The top half is the engine, full of your file's layers. The neck lets one message through: ANALYSIS_COMPLETE, the findings. The bottom half is the panel, which draws the score from that message alone.">
+  <svg id="hg" viewBox="0 0 160 300" width="160" height="300" aria-hidden="true">
+   <defs><clipPath id="top"><path d="M18 12 C18 92 72 118 72 150 L88 150 C88 118 142 92 142 12 Z"/></clipPath></defs>
+   <g class="layers" clip-path="url(#top)" id="lay"></g>
+   <path d="M14 10 C14 92 70 120 70 150 C70 180 14 208 14 290 L146 290 C146 208 90 180 90 150 C90 120 146 92 146 10 Z" fill="none" stroke="var(--fog)" stroke-width="1.5"/>
+   <rect x="4" y="2" width="152" height="8" rx="3" fill="var(--text)"/><rect x="4" y="290" width="152" height="8" rx="3" fill="var(--text)"/>
+   <circle class="grain" cx="80" cy="150" r="5"/>
+   <!-- panel: what gets drawn -->
+   <text x="80" y="242" text-anchor="middle" font-size="34" font-weight="700" fill="var(--text)" font-family="system-ui,sans-serif">82</text>
+   <text x="80" y="258" text-anchor="middle" font-size="12" fill="var(--fog)" font-family="ui-monospace,Menlo,monospace">score</text>
+   <g fill="var(--accent)"><rect x="44" y="266" width="62" height="4" rx="2"/><rect x="44" y="273" width="48" height="4" rx="2" opacity=".75"/><rect x="44" y="280" width="70" height="4" rx="2" opacity=".55"/></g>
+  </svg>
+  <div class="lbls">
+   <p class="l top"><span class="n">The engine</span><span class="s">Reads every layer. No screen, offline.*</span><span class="k">code.ts</span></p>
+   <p class="l mid"><span class="pill">ANALYSIS_COMPLETE</span><span class="s">Findings only, never the file.</span></p>
+   <p class="l bot"><span class="n">The panel</span><span class="s">Draws the score. Can&rsquo;t see the file.</span><span class="k">UI iframe &middot; React</span></p>
+  </div>
+ </figure>
+</section>
+<p class="cap">block height: <b>300px</b> desktop 1440&times;900 / <b>523px</b> mobile 375&times;812 &middot; headless Chrome &middot; budget 640 / 560 &middot; this window: <span id="live">&ndash;</span></p>
+</div>
+<script>
+(function(){
+// fill the top bulb with "layers" (the whole file)
+var g=document.getElementById('lay'),ns='http://www.w3.org/2000/svg',i=0;
+for(var y=14;y<150;y+=9)for(var x=16;x<146;x+=13){var r=document.createElementNS(ns,'rect');
+r.setAttribute('x',x);r.setAttribute('y',y);r.setAttribute('width',11);r.setAttribute('height',7);r.setAttribute('rx',1.5);
+if((i++*7)%11===0)r.setAttribute('class','hot');g.appendChild(r)}
+var R=document.documentElement,b=document.getElementById('theme');
+function cur(){return R.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function lab(){b.textContent=cur()==='dark'?'Light theme':'Dark theme'}
+b.onclick=function(){R.dataset.theme=cur()==='dark'?'light':'dark';lab()};lab();
+function m(){var h=Math.round(document.getElementById('block').getBoundingClientRect().height);
+document.getElementById('live').textContent=h+'px at '+innerWidth+'px wide';
+var d=document.body.dataset;d.h=h;d.sw=document.documentElement.scrollWidth;d.w=innerWidth}
+addEventListener('resize',m);addEventListener('load',m);m()})();
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import RawFolder from "@/components/Folder";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
-import ArchitectureFlow from "./ArchitectureFlow";
+import ArchitectureOverlap from "./ArchitectureOverlap";
 
 // the .jsx Folder types items as never[] — give it a usable signature
 const Folder = RawFolder as React.ComponentType<{
@@ -58,7 +58,7 @@ export default function Solution() {
           lead="A Figma-based engine that detects, measures, and reports on design-system health — pure analysis, no automation."
         />
 
-        <ArchitectureFlow />
+        <ArchitectureOverlap />
 
         {/* Ingest -> Scan -> Detect -> Report */}
         <div className="mt-24">
