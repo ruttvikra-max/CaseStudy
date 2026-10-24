@@ -66,7 +66,7 @@ export default function Personas() {
   return (
     <section
       id="personas"
-      className="relative border-t border-white/5 bg-void py-28 sm:py-36"
+      className="relative border-t border-ink/5 bg-void py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -81,20 +81,20 @@ export default function Personas() {
             <Reveal key={p.name} delay={i * 120}>
               <BorderGlow
                 glowColor="31 100 56"
-                backgroundColor="#0b0d12"
+                backgroundColor="var(--color-void-1)"
                 borderRadius={24}
                 glowIntensity={0.9}
                 className="h-full"
               >
                 <div className="p-8 sm:p-10">
                   {/* identity */}
-                  <div className="flex items-start justify-between gap-4 border-b border-white/8 pb-6">
+                  <div className="flex items-start justify-between gap-4 border-b border-ink/8 pb-6">
                     <div>
                       <h3 className="font-display text-3xl leading-none text-pearl">
                         {p.name}
                       </h3>
                       <p className="mt-3 text-sm text-fog/80">{p.role}</p>
-                      <p className="text-sm text-fog/55">{p.company}</p>
+                      <p className="text-sm text-fog/65">{p.company}</p>
                     </div>
                     <span className="font-mono text-xs text-accent-primary/80">
                       AGE {p.age}

@@ -51,12 +51,12 @@ function Mark({ v, ours }: { v: number; ours?: boolean }) {
     );
   if (v === 1)
     return (
-      <span className="text-fog/55" aria-label="partial">
+      <span className="text-fog/65" aria-label="partial">
         ◐
       </span>
     );
   return (
-    <span className="text-white/15" aria-label="none">
+    <span className="text-ink/15" aria-label="none">
       –
     </span>
   );
@@ -66,7 +66,7 @@ export default function Market() {
   return (
     <section
       id="market"
-      className="relative border-t border-white/5 bg-void-1 py-28 sm:py-36"
+      className="relative border-t border-ink/5 bg-void-1 py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -77,12 +77,12 @@ export default function Market() {
         />
 
         {/* stat band */}
-        <div className="mt-16 grid grid-cols-1 gap-y-10 border-y border-white/10 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
+        <div className="mt-16 grid grid-cols-1 gap-y-10 border-y border-ink/10 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
           {STATS.map((s, i) => (
             <Reveal
               key={s.value}
               delay={i * 80}
-              className="lg:border-l lg:border-white/10 lg:pl-6 lg:first:border-l-0 lg:first:pl-0"
+              className="lg:border-l lg:border-ink/10 lg:pl-6 lg:first:border-l-0 lg:first:pl-0"
             >
               <div className="font-display text-[clamp(34px,4vw,52px)] font-normal leading-none text-accent-primary">
                 {s.value}
@@ -99,7 +99,7 @@ export default function Market() {
           <div className="grid items-center gap-10 lg:grid-cols-2">
             {/* left — narrative */}
             <div>
-              <Reveal className="kicker mb-3 text-fog/45">Competitive landscape</Reveal>
+              <Reveal className="kicker mb-3 text-fog/65">Competitive landscape</Reveal>
               <Reveal
                 as="h3"
                 delay={60}
@@ -130,8 +130,8 @@ export default function Market() {
                   <Card
                     key={c.name}
                     style={{
-                      background: "#11141b",
-                      border: "1px solid rgba(255,255,255,0.12)",
+                      background: "var(--color-void-2)",
+                      border: "1px solid color-mix(in oklab, var(--color-ink) 14%, transparent)",
                       borderRadius: 18,
                     }}
                   >
@@ -150,7 +150,7 @@ export default function Market() {
                         </h3>
                         <p className="mt-2 text-sm text-fog/80">{c.pos}</p>
                       </div>
-                      <div className="border-t border-white/8 pt-3 text-sm text-accent-primary">
+                      <div className="border-t border-ink/8 pt-3 text-sm text-accent-primary">
                         Gap — {c.gap}
                       </div>
                     </div>
@@ -162,18 +162,18 @@ export default function Market() {
 
           {/* capability matrix — the points of difference */}
           <div className="mt-24 lg:mt-56">
-            <Reveal className="kicker mb-5 text-fog/45">
+            <Reveal className="kicker mb-5 text-fog/65">
               Capability coverage — only one row is complete
             </Reveal>
             <Reveal delay={60} className="overflow-x-auto">
               <table className="w-full min-w-[640px] border-collapse text-left">
                 <thead>
-                  <tr className="border-b border-white/12">
-                    <th className="kicker py-3 pr-4 font-normal text-fog/55">Tool</th>
+                  <tr className="border-b border-ink/12">
+                    <th className="kicker py-3 pr-4 font-normal text-fog/65">Tool</th>
                     {CAPS.map((c) => (
                       <th
                         key={c}
-                        className="kicker px-2 py-3 text-center font-normal text-fog/55"
+                        className="kicker px-2 py-3 text-center font-normal text-fog/65"
                       >
                         {c}
                       </th>
@@ -184,7 +184,7 @@ export default function Market() {
                   {MATRIX.map((row) => (
                     <tr
                       key={row.name}
-                      className={`border-b border-white/8 ${
+                      className={`border-b border-ink/8 ${
                         row.ours ? "bg-accent-soft" : ""
                       }`}
                     >
@@ -212,8 +212,8 @@ export default function Market() {
             </Reveal>
             <Reveal delay={120} className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-fog/60">
               <span><span className="text-pearl/85">●</span> Full</span>
-              <span><span className="text-fog/55">◐</span> Partial</span>
-              <span><span className="text-white/30">–</span> None</span>
+              <span><span className="text-fog/65">◐</span> Partial</span>
+              <span><span className="text-ink/30">–</span> None</span>
             </Reveal>
           </div>
 

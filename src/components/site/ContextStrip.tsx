@@ -6,7 +6,7 @@ export default function ContextStrip() {
       <div className="wrap">
         <div className="grid gap-10 md:grid-cols-[140px_1fr]">
           {/* chapter index */}
-          <Reveal className="kicker pt-2 text-fog/45">00 — Context</Reveal>
+          <Reveal className="kicker pt-2 text-fog/65">00 — Context</Reveal>
 
           {/* lead statement */}
           <Reveal

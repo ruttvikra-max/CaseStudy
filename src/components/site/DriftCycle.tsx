@@ -90,7 +90,7 @@ export default function DriftCycle() {
             </linearGradient>
           </defs>
           {/* faint base track */}
-          <path d={TRACK} stroke="rgba(255,255,255,0.07)" strokeWidth="2" />
+          <path d={TRACK} stroke="var(--color-ink)" strokeOpacity="0.1" strokeWidth="2" />
           {/* drawn gradient track */}
           <path className="drift-track" style={{ ["--len" as string]: TRACK_LEN }} d={TRACK} stroke="url(#trackGrad)" strokeWidth="2" />
           {/* connector dots at node centers */}
@@ -110,7 +110,7 @@ export default function DriftCycle() {
           {STAGES.map((s, i) => (
             <div
               key={s.label}
-              className="drift-node absolute flex h-[102.38px] w-[17.5%] flex-col justify-center rounded-xl border border-white/10 bg-void-2/90 p-3.5 backdrop-blur-sm"
+              className="drift-node absolute flex h-[102.38px] w-[17.5%] flex-col justify-center rounded-xl border border-ink/10 bg-void-2/90 p-3.5 backdrop-blur-sm"
               style={{
                 left: `${(POS[i].x / 1240) * 100}%`,
                 top: `${(POS[i].y / VB_H) * 100}%`,
@@ -147,7 +147,7 @@ export default function DriftCycle() {
 
           {/* loop-back label on the left side */}
           <div className="absolute left-[12.5%] top-1/2 -translate-x-[140%] -translate-y-1/2 -rotate-90">
-            <span className="kicker whitespace-nowrap text-fog/45">↻ worse each pass</span>
+            <span className="kicker whitespace-nowrap text-fog/65">↻ worse each pass</span>
           </div>
         </div>
       </div>
@@ -157,7 +157,7 @@ export default function DriftCycle() {
         {/* line + pulse are bound to the node list and centred on the icons */}
         <div className="relative">
           {/* vertical line through the icon centres */}
-          <div className="absolute inset-y-4 left-[20px] w-px -translate-x-1/2 bg-white/10" />
+          <div className="absolute inset-y-4 left-[20px] w-px -translate-x-1/2 bg-ink/10" />
           {/* travelling pulse */}
           {!reduced && (
             <div className="pointer-events-none absolute inset-y-4 left-[20px] -translate-x-1/2">
@@ -167,7 +167,7 @@ export default function DriftCycle() {
           <ul className="space-y-5">
             {STAGES.map((s, i) => (
               <li key={s.label} className="relative flex items-center gap-4 pl-1">
-                <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-void-2" style={{ color: s.color, boxShadow: `0 0 0 1px ${s.color}33` }}>
+                <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-ink/10 bg-void-2" style={{ color: s.color, boxShadow: `0 0 0 1px ${s.color}33` }}>
                   <Icon name={s.icon} />
                 </span>
                 <div>
@@ -179,7 +179,7 @@ export default function DriftCycle() {
           </ul>
         </div>
         {/* loop-back — ↻ sits under the same icon column */}
-        <div className="mt-6 flex items-center gap-4 pl-1 text-fog/55">
+        <div className="mt-6 flex items-center gap-4 pl-1 text-fog/65">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center text-base text-accent-primary">↻</span>
           <span className="text-sm">Back to the top — worse each pass.</span>
         </div>

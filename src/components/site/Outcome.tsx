@@ -47,7 +47,7 @@ export default function Outcome() {
   return (
     <section
       id="outcome"
-      className="relative border-t border-white/5 bg-void-1 py-28 sm:py-36"
+      className="relative border-t border-ink/5 bg-void-1 py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader
@@ -63,7 +63,7 @@ export default function Outcome() {
             <Reveal
               key={w.title}
               delay={i * 90}
-              className="rounded-2xl border border-white/8 bg-void-2 p-7"
+              className="rounded-2xl border border-ink/8 bg-void-2 p-7"
             >
               <div className="kicker text-accent-primary/80">{w.k}</div>
               <h3 className="mt-4 font-sans text-lg font-medium text-pearl">
@@ -76,7 +76,7 @@ export default function Outcome() {
 
         {/* roadmap */}
         <div className="mt-24">
-          <Reveal className="kicker mb-8 text-fog/45">
+          <Reveal className="kicker mb-8 text-fog/65">
             The road to design-system intelligence
           </Reveal>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -87,7 +87,7 @@ export default function Outcome() {
                 className={`rounded-2xl border p-7 ${
                   r.active
                     ? "border-accent-primary/40 bg-accent-soft"
-                    : "border-white/8 bg-void"
+                    : "border-ink/8 bg-void"
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -98,7 +98,7 @@ export default function Outcome() {
                   >
                     {r.phase}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-fog/55">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-fog/65">
                     {r.when}
                   </span>
                 </div>
@@ -114,7 +114,7 @@ export default function Outcome() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 border-t border-white/8 pt-4 text-sm text-pearl/70">
+                <div className="mt-6 border-t border-ink/8 pt-4 text-sm text-pearl/70">
                   {r.outcome}
                 </div>
               </Reveal>
@@ -124,7 +124,7 @@ export default function Outcome() {
 
         {/* reflection */}
         <div className="mt-24 max-w-3xl">
-          <Reveal className="kicker mb-3 text-fog/45">Reflection</Reveal>
+          <Reveal className="kicker mb-3 text-fog/65">Reflection</Reveal>
           <Reveal as="p" delay={60} className="text-pretty text-lg leading-relaxed text-fog/85">
             The hardest part wasn&rsquo;t building the analyzer — it was the
             discipline to keep the measurement core deterministic and the scope
@@ -146,7 +146,7 @@ export default function Outcome() {
         </Reveal>
 
         {/* footer */}
-        <footer className="mt-28 flex flex-col gap-6 border-t border-white/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
+        <footer className="mt-28 flex flex-col gap-6 border-t border-ink/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
           <div className="font-display text-lg text-pearl">Ruttvik Aron</div>
           <div className="flex flex-wrap gap-x-7 gap-y-2">
             <a href="mailto:ruttvik.aron@hilabs.com" className="kicker text-fog/70 transition-colors hover:text-accent-primary">
@@ -155,7 +155,7 @@ export default function Outcome() {
             <a href="#hero" className="kicker text-fog/70 transition-colors hover:text-accent-primary">
               Back to top
             </a>
-            <span className="kicker text-fog/40">Design System Intelligence Engine · 2026</span>
+            <span className="kicker text-fog/65">Design System Intelligence Engine · 2026</span>
           </div>
         </footer>
       </div>
