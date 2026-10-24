@@ -1,10 +1,7 @@
 "use client";
 
-import GlassIcons from "@/components/GlassIcons";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
-
-const AMBER_GRADIENT = "linear-gradient(hsl(31, 100%, 55%), hsl(20, 100%, 48%))";
 
 const I = {
   repeat: (
@@ -21,11 +18,13 @@ const I = {
   ),
 };
 
+// TODO(placeholder): the one-line explanations are drafted copy (not from the
+// deck) — review wording, especially "Fast" (no speed numbers are claimed).
 const PRINCIPLES = [
-  { icon: I.repeat, color: AMBER_GRADIENT, label: "Reproducible" },
-  { icon: I.lock, color: AMBER_GRADIENT, label: "Private" },
-  { icon: I.offline, color: AMBER_GRADIENT, label: "Offline" },
-  { icon: I.zap, color: AMBER_GRADIENT, label: "Fast" },
+  { icon: I.repeat, label: "Reproducible", lead: "Same file, same score — every run, every machine.", body: "A team can track a number over time and trust that it moved because the file moved." },
+  { icon: I.lock, label: "Private", lead: "Nothing is sent to a model to be read.", body: "The rules run inside Figma\u2019s sandbox, so proprietary design data never leaves your machine." },
+  { icon: I.offline, label: "Offline", lead: "No API, no model endpoint, no connection required.", body: "The audit works wherever Figma works." },
+  { icon: I.zap, label: "Fast", lead: "A scan waits on nothing.", body: "No inference queue, no network round-trip — rules run locally against the layer tree." },
 ];
 
 const OPTIONS = [
@@ -144,9 +143,33 @@ export default function TurningPoint() {
             That single constraint earns four properties for free:
           </Reveal>
 
-          <Reveal delay={200} className="mt-12">
-            <GlassIcons items={PRINCIPLES} className="" />
-          </Reveal>
+          <ol className="mt-12 grid border-t border-ink/10 lg:grid-cols-2 lg:gap-x-16 lg:border-t-0">
+            {PRINCIPLES.map((p, i) => (
+              <Reveal
+                as="li"
+                key={p.label}
+                delay={i * 80}
+                className="grid grid-cols-[3rem_1fr] gap-x-4 border-b border-ink/10 py-7 lg:border-b-0 lg:border-t lg:py-8 lg:[&:nth-last-child(-n+2)]:border-b"
+              >
+                <span className="pt-1.5 font-mono text-base text-accent-primary" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-accent-soft text-accent-primary" aria-hidden="true">
+                      {p.icon}
+                    </span>
+                    <h4 className="font-sans text-[clamp(22px,2.2vw,28px)] font-medium tracking-[-0.01em] text-pearl">
+                      {p.label}
+                    </h4>
+                  </div>
+                  <p className="mt-2.5 max-w-[62ch] text-fog">
+                    <strong className="font-medium text-pearl">{p.lead}</strong> {p.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

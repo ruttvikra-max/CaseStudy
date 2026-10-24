@@ -66,7 +66,7 @@ export default function Market() {
   return (
     <section
       id="market"
-      className="relative border-t border-ink/5 bg-void-1 py-28 sm:py-36"
+      className="relative overflow-x-clip border-t border-ink/5 bg-void-1 py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader

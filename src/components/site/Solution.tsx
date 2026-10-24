@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import RawFolder from "@/components/Folder";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
+import ArchitectureFlow from "./ArchitectureFlow";
 
 // the .jsx Folder types items as never[] — give it a usable signature
 const Folder = RawFolder as React.ComponentType<{
@@ -57,58 +58,7 @@ export default function Solution() {
           lead="A Figma-based engine that detects, measures, and reports on design-system health — pure analysis, no automation."
         />
 
-        {/* two-environment model */}
-        <div className="mt-16">
-          <Reveal className="kicker mb-5 text-fog/65">The architecture constraint</Reveal>
-          <div className="grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr]">
-            <Reveal className="rounded-2xl border border-ink/8 bg-void-2 p-7">
-              <div className="font-mono text-sm uppercase tracking-wider text-accent-primary/80">
-                Plugin sandbox · code.ts
-              </div>
-              <ul className="mt-4 space-y-2 text-base text-fog/80">
-                <li>✓ Full Figma file API — nodes, variables, layers</li>
-                <li>✗ No DOM, no window</li>
-                <li>✗ No network access</li>
-              </ul>
-              <p className="mt-4 text-sm text-fog/65">
-                Runs traversal, analysis, scoring.
-              </p>
-            </Reveal>
-
-            <Reveal
-              delay={80}
-              className="flex flex-col items-center justify-center px-2 py-4 md:py-0"
-            >
-              <div className="font-mono text-xs uppercase tracking-wider text-fog/65">
-                postMessage
-              </div>
-              <div className="my-2 text-accent-primary">→</div>
-              <div className="font-mono text-xs text-fog/65">
-                ANALYSIS_COMPLETE
-              </div>
-            </Reveal>
-
-            <Reveal delay={120} className="rounded-2xl border border-ink/8 bg-void-2 p-7">
-              <div className="font-mono text-sm uppercase tracking-wider text-accent-primary/80">
-                UI iframe · React
-              </div>
-              <ul className="mt-4 space-y-2 text-base text-fog/80">
-                <li>✓ Full DOM, React components</li>
-                <li>✗ No Figma file API</li>
-                <li>✗ Blind to the design data</li>
-              </ul>
-              <p className="mt-4 text-sm text-fog/65">
-                Renders score, pillars, per-screen issues.
-              </p>
-            </Reveal>
-          </div>
-          <Reveal delay={160} className="mt-5 max-w-[62ch] text-base text-fog/65">
-            Two isolated environments that can&rsquo;t see each other&rsquo;s
-            APIs, bridged by one typed message. That constraint forced a clean
-            separation — the engine and the interface are independent systems
-            with a defined contract.
-          </Reveal>
-        </div>
+        <ArchitectureFlow />
 
         {/* Ingest -> Scan -> Detect -> Report */}
         <div className="mt-24">

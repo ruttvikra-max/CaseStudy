@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept C — Who Can Do What</title>
+<style>
+  :root {
+    --bg:#f7f6f2; --surface:#fff; --surface-2:#efede7; --text:#0b0d12; --fog:#2a303c;
+    --line:rgba(11,13,18,.12); --accent:#b45309; --accent-soft:rgba(180,83,9,.10); --no:#8a2a2a;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#06070a; --surface:#0b0d12; --surface-2:#11141b; --text:#f5f7ff; --fog:#aeb6c2;
+      --line:rgba(255,255,255,.10); --accent:#ff8a1e; --accent-soft:rgba(255,138,30,.12); --no:#ff8f8f;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#06070a; --surface:#0b0d12; --surface-2:#11141b; --text:#f5f7ff; --fog:#aeb6c2;
+    --line:rgba(255,255,255,.10); --accent:#ff8a1e; --accent-soft:rgba(255,138,30,.12); --no:#ff8f8f;
+    color-scheme: dark;
+  }
+  * { box-sizing:border-box; }
+  button { white-space:nowrap; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:1200px; margin:0 auto; padding:72px 16px 96px; }
+  @media (min-width:768px){ .wrap { padding:96px 40px 120px; } }
+  .bar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:48px; }
+  .kicker { font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--fog); opacity:.8; }
+  button { min-height:44px; padding:0 18px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:15px; cursor:pointer; }
+  button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  h2 { font-size:clamp(28px,4vw,48px); line-height:1.12; letter-spacing:-.01em; font-weight:500; margin:12px 0 0; max-width:22ch; }
+  .lead { max-width:62ch; color:var(--fog); margin:20px 0 0; font-size:18px; }
+  .lead b { color:var(--text); font-weight:600; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em; }
+
+  /* lens switch */
+  .lens { display:inline-flex; margin-top:32px; padding:4px; border:1px solid var(--line); border-radius:999px; background:var(--surface); }
+  .lens button { border:0; background:transparent; min-width:120px; }
+  .lens button[aria-pressed="true"] { background:var(--accent); color:var(--bg); font-weight:600; }
+  /* only one vocabulary visible at a time */
+  [data-lens="plain"] .tech-t, [data-lens="tech"] .plain-t { display:none; }
+
+  /* matrix */
+  .matrix { margin-top:24px; border:1px solid var(--line); border-radius:20px; background:var(--surface); overflow:hidden; }
+  .row { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line); }
+  .row:first-child { border-top:0; }
+  .row > * { padding:16px 20px; }
+  .rlabel { grid-column:1 / -1; padding-bottom:0; font-weight:600; font-size:17px; }
+  @media (min-width:760px){
+    .row { grid-template-columns:1.2fr 1fr 1fr; }
+    .rlabel { grid-column:auto; padding-bottom:16px; }
+    .row > * + * { border-left:1px solid var(--line); }
+  }
+  .head { background:var(--surface-2); }
+  .head .rlabel { display:none; }
+  @media (min-width:760px){ .head .rlabel { display:block; color:var(--fog); font-weight:400; font-size:15px; } }
+  .col-h { font-weight:600; font-size:18px; line-height:1.3; }
+  .col-h small { display:block; font:13px ui-monospace,monospace; color:var(--accent); font-weight:400; margin-top:2px; }
+  .cell { display:flex; gap:10px; align-items:flex-start; }
+  .cell svg { flex:none; margin-top:5px; }
+  .cell > div { min-width:0; overflow-wrap:anywhere; }
+  .cell b { display:block; font-size:16px; }
+  .cell span.d { color:var(--fog); font-size:16px; }
+  .yes { color:var(--accent); } .no { color:var(--no); } .msg-i { color:var(--fog); }
+  .row.network { background:var(--accent-soft); }
+
+  /* the one handoff */
+  .handoff { margin-top:56px; display:grid; gap:24px; align-items:start; }
+  @media (min-width:900px){ .handoff { grid-template-columns:1fr 1fr; gap:40px; } }
+  .handoff h3 { margin:8px 0 0; font-size:clamp(22px,2.6vw,30px); line-height:1.2; font-weight:500; }
+  .handoff p { color:var(--fog); max-width:62ch; }
+  .payload { border:1px dashed var(--accent); border-radius:16px; background:var(--surface); padding:20px; min-width:0; }
+  .payload pre { margin:0; overflow-x:auto; font:14px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .payload .c { color:var(--fog); }
+  .payload .k { color:var(--accent); }
+  .payload .note { margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line); font-size:15px; color:var(--fog); }
+
+  .why-grid { display:grid; gap:16px; margin-top:20px; }
+  @media (min-width:768px){ .why-grid { grid-template-columns:repeat(3,1fr); } }
+  .why-card { border:1px solid var(--line); border-radius:16px; padding:24px; background:var(--surface); }
+  .why-card h4 { margin:0 0 8px; font-size:19px; font-weight:600; line-height:1.3; }
+  .why-card p { margin:0; color:var(--fog); }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ok" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="env" viewBox="0 0 16 16"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2 4.5l6 4.5 6-4.5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+</svg>
+
+<main class="wrap" id="root" data-lens="plain">
+  <div class="bar">
+    <span class="kicker">Concept C · Capability matrix · “Who can do what”</span>
+    <button id="theme" type="button" aria-label="Toggle colour theme">Theme</button>
+  </div>
+
+  <section aria-labelledby="t">
+    <div class="kicker">The architecture constraint</div>
+    <h2 id="t">Two halves. Neither can do the whole job.</h2>
+    <p class="lead">Figma runs every plugin as two sealed-off programs: <b>an engine that can read your file</b> and <b>a panel that can show you results</b>. Neither can do the other’s job — so the design had to be split the same way.</p>
+
+    <div class="lens" role="group" aria-label="Choose vocabulary">
+      <button type="button" data-set="plain" aria-pressed="true">Plain English</button>
+      <button type="button" data-set="tech" aria-pressed="false">Engineer view</button>
+    </div>
+
+    <div class="matrix" role="table" aria-label="What each side of the plugin can do">
+      <div class="row head" role="row">
+        <div class="rlabel" role="columnheader">Capability</div>
+        <div role="columnheader"><div class="col-h"><span class="plain-t">The engine</span><span class="tech-t">Main thread</span><small>Plugin sandbox · code.ts</small></div></div>
+        <div role="columnheader"><div class="col-h"><span class="plain-t">The panel</span><span class="tech-t">UI iframe</span><small>React · ui.html</small></div></div>
+      </div>
+
+      <div class="row" role="row">
+        <div class="rlabel" role="rowheader"><span class="plain-t">Read your design file</span><span class="tech-t">Figma scene access</span></div>
+        <div class="cell" role="cell"><svg class="yes" width="16" height="16" aria-hidden="true"><use href="#ok"/></svg><div><b>Yes</b><span class="d plain-t">Every layer, colour, token and component.</span><span class="d tech-t"><code>figma.*</code> — nodes, variables, styles.</span></div></div>
+        <div class="cell" role="cell"><svg class="no" width="16" height="16" aria-hidden="true"><use href="#x"/></svg><div><b>No</b><span class="d plain-t">Blind to the design — knows only what it’s told.</span><span class="d tech-t">No scene API in the iframe.</span></div></div>
+      </div>
+
+      <div class="row" role="row">
+        <div class="rlabel" role="rowheader"><span class="plain-t">Show you anything on screen</span><span class="tech-t">Rendering / browser APIs</span></div>
+        <div class="cell" role="cell"><svg class="no" width="16" height="16" aria-hidden="true"><use href="#x"/></svg><div><b>No</b><span class="d plain-t">No screen, no buttons, no charts.</span><span class="d tech-t">No DOM, <code>window</code>, XHR or timers.</span></div></div>
+        <div class="cell" role="cell"><svg class="yes" width="16" height="16" aria-hidden="true"><use href="#ok"/></svg><div><b>Yes</b><span class="d plain-t">The full interface: score, pillars, issues.</span><span class="d tech-t">Full DOM; React renders here.</span></div></div>
+      </div>
+
+      <div class="row network" role="row">
+        <div class="rlabel" role="rowheader"><span class="plain-t">Send anything to the internet</span><span class="tech-t">Outbound network</span></div>
+        <div class="cell" role="cell"><svg class="no" width="16" height="16" aria-hidden="true"><use href="#x"/></svg><div><b>No — switched off</b><span class="d plain-t">Your file can’t leave your machine.</span><span class="d tech-t"><code>allowedDomains: ["none"]</code></span></div></div>
+        <div class="cell" role="cell"><svg class="no" width="16" height="16" aria-hidden="true"><use href="#x"/></svg><div><b>No — switched off</b><span class="d plain-t">Same lock, enforced by Figma.</span><span class="d tech-t">Blocked by Figma’s CSP.</span></div></div>
+      </div>
+
+      <div class="row" role="row">
+        <div class="rlabel" role="rowheader"><span class="plain-t">Talk to the other half</span><span class="tech-t">Cross-context communication</span></div>
+        <div class="cell" role="cell"><svg class="msg-i" width="16" height="16" aria-hidden="true"><use href="#env"/></svg><div><b>Only by message</b><span class="d plain-t">Like passing a note — nothing shared.</span><span class="d tech-t"><code>figma.ui.postMessage()</code></span></div></div>
+        <div class="cell" role="cell"><svg class="msg-i" width="16" height="16" aria-hidden="true"><use href="#env"/></svg><div><b>Only by message</b><span class="d plain-t">It reads the note, never the file.</span><span class="d tech-t"><code>parent.postMessage({ pluginMessage })</code></span></div></div>
+      </div>
+    </div>
+
+    <div class="handoff">
+      <div>
+        <div class="kicker">The only thing that crosses</div>
+        <h3>One message, sent once the analysis is done.</h3>
+        <p class="plain-t">The engine does all the reading and scoring, then hands over a short summary of what it found. The panel turns that summary into the screens you see. Your actual design never travels.</p>
+        <p class="tech-t">A single typed contract — <code>ANALYSIS_COMPLETE</code> — is the whole interface between the two contexts. Messages are structured-cloned, so the UI can never hold a live node reference.</p>
+      </div>
+      <div class="payload" aria-label="Example message">
+<pre><span class="c">// shape illustrative</span>
+{
+  <span class="k">type</span>: "ANALYSIS_COMPLETE",
+  <span class="k">score</span>: 72,  <span class="c">// grade C</span>
+  <span class="k">pillars</span>: { tokens, components, naming },
+  <span class="k">issues</span>: [ …ranked by severity ]
+}</pre>
+        <p class="note">Findings only. No layers, no images, no file.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:56px">
+      <div class="kicker">Why that shaped the design</div>
+      <div class="why-grid">
+        <div class="why-card"><h4>Private by construction</h4><p>The data stays with the engine; only the findings cross, and nothing goes online.</p></div>
+        <div class="why-card"><h4>Two systems, one contract</h4><p>Engine and interface are built and tested independently against one message.</p></div>
+        <div class="why-card"><h4>Measurement stays pure</h4><p>The engine has no screen to manage — it only measures, so the same file gives the same score.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('theme');
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var saved; try { saved = localStorage.getItem('concept-theme'); } catch (e) {}
+    function set(t) { root.setAttribute('data-theme', t); btn.textContent = t === 'dark' ? '☀ Light' : '☾ Dark'; btn.setAttribute('aria-pressed', t === 'dark'); }
+    set(saved || (mq.matches ? 'dark' : 'light'));
+    btn.addEventListener('click', function () {
+      var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      set(t); try { localStorage.setItem('concept-theme', t); } catch (e) {}
+    });
+
+    var main = document.getElementById('root');
+    document.querySelectorAll('.lens button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        main.setAttribute('data-lens', b.dataset.set);
+        document.querySelectorAll('.lens button').forEach(function (o) { o.setAttribute('aria-pressed', o === b); });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

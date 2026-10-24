@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decision 02 — Concept A</title>
+<style>
+  :root {
+    --bg: #f7f6f2; --surface: #ffffff; --surface-2: #efede7;
+    --text: #0b0d12; --fog: #2a303c; --accent: #b45309;
+    --line: rgba(11, 13, 18, .12); --accent-soft: rgba(180, 83, 9, .10);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #06070a; --surface: #0b0d12; --surface-2: #11141b;
+      --text: #f5f7ff; --fog: #aeb6c2; --accent: #ff8a1e;
+      --line: rgba(255, 255, 255, .10); --accent-soft: rgba(255, 138, 30, .12);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #06070a; --surface: #0b0d12; --surface-2: #11141b;
+    --text: #f5f7ff; --fog: #aeb6c2; --accent: #ff8a1e;
+    --line: rgba(255, 255, 255, .10); --accent-soft: rgba(255, 138, 30, .12);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 17px/1.7 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 1320px; margin-inline: auto; padding: 96px clamp(16px, 5vw, 96px); }
+  .mono { font-family: ui-monospace, "Roboto Mono", Menlo, monospace; }
+  .toggle {
+    position: absolute; top: 16px; right: 16px; z-index: 10;
+    min-height: 44px; padding: 0 16px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--text);
+    font: inherit; font-size: 15px; cursor: pointer;
+  }
+  .eyebrow { color: var(--accent); font-size: 16px; margin: 0; }
+  h3 { font-size: clamp(28px, 3.4vw, 46px); font-weight: 400; line-height: 1.15; letter-spacing: -.01em; margin: 12px 0 0; }
+  blockquote {
+    margin: 32px 0 0; max-width: 48rem; padding-left: 28px; border-left: 2px solid var(--accent);
+    font-size: clamp(22px, 2.8vw, 34px); line-height: 1.35; letter-spacing: -.01em;
+  }
+  .lead { margin: 24px 0 0; max-width: 62ch; color: var(--fog); }
+
+  /* ── Concept A: numbered, always-visible principle rows ── */
+  .pillars { list-style: none; margin: 48px 0 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .pillar {
+    display: grid; grid-template-columns: 3rem 1fr; gap: 0 16px;
+    padding: 28px 0; border-bottom: 1px solid var(--line);
+  }
+  .num { color: var(--accent); font-size: 16px; padding-top: 6px; }
+  .head { display: flex; align-items: center; gap: 12px; }
+  .icon {
+    display: inline-flex; width: 40px; height: 40px; flex: none; align-items: center; justify-content: center;
+    border-radius: 10px; background: var(--accent-soft); color: var(--accent);
+  }
+  h4 { margin: 0; font-size: clamp(22px, 2.2vw, 28px); font-weight: 500; letter-spacing: -.01em; }
+  .pillar p { margin: 10px 0 0; max-width: 62ch; color: var(--fog); }
+  .pillar p strong { color: var(--text); font-weight: 500; }
+
+  @media (min-width: 900px) {
+    .pillars { grid-template-columns: 1fr 1fr; column-gap: 64px; border-top: 0; }
+    .pillar { border-top: 1px solid var(--line); border-bottom: 0; padding: 32px 0 36px; }
+    .pillar:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<button class="toggle" type="button" id="theme" aria-label="Toggle light or dark theme">Theme</button>
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById("theme");
+    function current() {
+      return root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    }
+    function label() { btn.textContent = current() === "dark" ? "Light mode" : "Dark mode"; }
+    btn.addEventListener("click", function () { root.dataset.theme = current() === "dark" ? "light" : "dark"; label(); });
+    label();
+  })();
+</script>
+
+<main class="wrap">
+  <p class="eyebrow mono">Decision 02</p>
+  <h3>Deterministic — not AI-first.</h3>
+  <blockquote>&ldquo;The most dangerous thing you can add to a governance tool is uncertainty. The same file should always produce the same score.&rdquo;</blockquote>
+  <p class="lead">Every design tool today reaches for an LLM. But a governance metric that changes without the file changing isn&rsquo;t a metric — it&rsquo;s a guess. So the measurement core stays deterministic. That single constraint earns four properties for free:</p>
+
+  <ol class="pillars">
+    <li class="pillar">
+      <span class="num mono" aria-hidden="true">01</span>
+      <div>
+        <div class="head">
+          <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span>
+          <h4>Reproducible</h4>
+        </div>
+        <p><strong>Same file, same score — every run, every machine.</strong> A team can track a number over time and trust that it moved because the file moved.</p>
+      </div>
+    </li>
+    <li class="pillar">
+      <span class="num mono" aria-hidden="true">02</span>
+      <div>
+        <div class="head">
+          <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+          <h4>Private</h4>
+        </div>
+        <p><strong>Nothing is sent to a model to be read.</strong> The rules run inside Figma&rsquo;s sandbox, so proprietary design data never leaves your machine.</p>
+      </div>
+    </li>
+    <li class="pillar">
+      <span class="num mono" aria-hidden="true">03</span>
+      <div>
+        <div class="head">
+          <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 2 20 20"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"/><path d="M5 13a10 10 0 0 1 5.24-2.76"/><line x1="12" x2="12.01" y1="20" y2="20"/></svg></span>
+          <h4>Offline</h4>
+        </div>
+        <p><strong>No API, no model endpoint, no connection required.</strong> The audit works wherever Figma works.</p>
+      </div>
+    </li>
+    <li class="pillar">
+      <span class="num mono" aria-hidden="true">04</span>
+      <div>
+        <div class="head">
+          <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span>
+          <h4>Fast</h4>
+        </div>
+        <p><strong>A scan waits on nothing.</strong> No inference queue, no network round-trip — rules run locally against the layer tree.</p>
+      </div>
+    </li>
+  </ol>
+</main>
+</body>
+</html>
