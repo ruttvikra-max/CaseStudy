@@ -193,6 +193,9 @@
   html {
     scroll-behavior: smooth;
   }
+  html, body {
+    overflow-x: clip; /* decorative glows must never create sideways scroll */
+  }
   h1, h2, h3, h4, .font-display {
     font-family: var(--font-display);
   }

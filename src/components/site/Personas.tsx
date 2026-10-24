@@ -66,7 +66,7 @@ export default function Personas() {
   return (
     <section
       id="personas"
-      className="relative border-t border-ink/5 bg-void py-28 sm:py-36"
+      className="relative overflow-x-clip border-t border-ink/5 bg-void py-28 sm:py-36"
     >
       <div className="wrap">
         <SectionHeader

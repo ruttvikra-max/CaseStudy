@@ -145,7 +145,7 @@ export default function Solution() {
               <span className="text-pearl">Compliance &amp; Drift Report</span>{" "}
               ranks each violation by severity. Open the folder.
             </Reveal>
-            <Reveal delay={180} className="mt-10 pl-4">
+            <Reveal delay={180} className="mt-10 w-fit pl-6">
               <Folder color="#FF8A1E" size={1.3} items={outputPapers} />
             </Reveal>
           </div>
